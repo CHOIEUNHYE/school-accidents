@@ -38,7 +38,7 @@ st.markdown(streamlit_style, unsafe_allow_html=True)
 #######################
 # 데이터 불러오기
 
-df = pd.read_csv('../../data/학교안전사고데이터통합/학교안전사고데이터_통합.csv')
+df = pd.read_csv('dashboard_data/학교안전사고데이터_5개년통합.csv')
 
 df['사고발생일'] = pd.to_datetime(df['사고발생일'])
 df['연도'] = df['사고발생일'].map(lambda x : x.year)
