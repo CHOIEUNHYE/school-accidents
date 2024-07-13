@@ -22,24 +22,51 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
+# css 설정 글씨체 변경 시도했지만 ㅜㅜ 안 됨
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 
-# 글씨체 변경 시도 ㅜㅜ 안 됨
-streamlit_style = """ 
-        <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+html, body, [class*="css"]  {
+    font-family: 'Nanum Gothic', sans-serif;
+}
+[data-testid="block-container"] {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 0rem;
+    margin-bottom: -7rem;
+}
 
-        html, body, [class*="css"]  {
-            font-family: 'Nanum Gothic', sans-serif;
-        }
-        </style>
-        """
-st.markdown(streamlit_style, unsafe_allow_html=True)
+[data-testid="stVerticalBlock"] {
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+
+[data-testid="stMetric"] {
+    text-align: center;
+    padding: 15px 0;
+}
+
+[data-testid="stMetricLabel"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size : 20px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+
 
 
 
 #######################
 # 데이터 불러오기
-df = pd.read_csv('dashboard_data/학교안전사고데이터_5개년통합.csv')
+df = pl.read_csv('../../data/학교안전사고데이터통합/학교안전사고데이터_통합.csv')
+df = df.to_pandas()
 df['사고발생일'] = pd.to_datetime(df['사고발생일'])
 df['연도'] = df['사고발생일'].map(lambda x : x.year)
 
