@@ -1,0 +1,61 @@
+html, body, h1, h2, h3, p, b [class*="css"] {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}
+
+/* tab */
+/* .st-bd {
+    color: rgb(53, 114, 194);
+}
+.st-c2 {
+    background-color: rgb(53, 114, 194);
+}
+
+
+/* dataframe */ 
+div.glideDataEditor.gdg-wmyidgi {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+} */
+            
+/* [data-testid="block-container"] {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 0rem;
+    margin-bottom: -7rem;
+}
+
+[data-testid="stVerticalBlock"] {
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+            
+[data-testid="stMarkdownContainer"] {
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+             */
+
+/* Metric */
+[data-testid="stMetric"] {
+    text-align: center;
+}
+         
+.st-emotion-cache-1whx7iy p {
+    font-size: 20px;
+}
+         
+[data-testid="stMetricLabel"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+            
+[data-testid="stMetricValue"] {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+    font-size: 20;
+}
+         
+.st-emotion-cache-1wivap2 {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}
+
