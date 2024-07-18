@@ -22,44 +22,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
-# css 설정 글씨체 변경 시도했지만 ㅜㅜ 안 됨
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
-
-html, body, [class*="css"]  {
-    font-family: 'Nanum Gothic', sans-serif;
-}
-[data-testid="block-container"] {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 1rem;
-    padding-bottom: 0rem;
-    margin-bottom: -7rem;
-}
-
-[data-testid="stVerticalBlock"] {
-    padding-left: 0rem;
-    padding-right: 0rem;
-}
-
-[data-testid="stMetric"] {
-    text-align: center;
-    padding: 15px 0;
-}
-
-[data-testid="stMetricLabel"] {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size : 20px;
-}
-
-</style>
-""", unsafe_allow_html=True)
 
 
+with open( "component\style\KoPubWorld Dotum.css" ) as css:
+    st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
 
+with open( "component\style\style.css" ) as css:
+    st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
 
 
 
@@ -78,10 +47,10 @@ with st.sidebar:
                          icons=['house', 'kanban', 'bi bi-robot','bi bi-robot'],
                          menu_icon="app-indicator", default_index=0,
                          styles={
-        "container": {"padding": "4!important", "background-color": "#fafafa"},
-        "icon": {"color": "black", "font-size": "25px"},
-        "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#fafafa"},
-        "nav-link-selected": {"background-color": "#08c7b4"},
+        "container": {"padding": "4!important", "background-color": "#fafafa","font-family" : "KoPubWorld Dotum"},
+        "icon": {"color": "", "font-size": "25px"},
+        "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+        "nav-link-selected": {"background-color": "#5c7dd2"},
     }
     )
 
