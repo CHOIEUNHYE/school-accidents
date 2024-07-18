@@ -1,4 +1,4 @@
-html, body, h1, h2, h3, p, b [class*="css"] {
+html, body, iframe, h1, h2, h3, h4, p, b, a [class*="css"] {
     font-family: 'KoPubWorld Dotum', sans-serif;
 }
 
@@ -9,13 +9,31 @@ html, body, h1, h2, h3, p, b [class*="css"] {
 .st-c2 {
     background-color: rgb(53, 114, 194);
 }
-
+/* //*[@id="app"]/div/div/div/ul/li[1]/a/text() */
 
 /* dataframe */ 
 div.glideDataEditor.gdg-wmyidgi {
     font-family: 'KoPubWorld Dotum', sans-serif;
+}
+/* .menu-title[data-v-5af006b8] {
+    font-family: 'KoPubWorld Dotum', sans-serif;
 } */
-            
+/* a.nav-link.active {
+    font-family: 'KoPubWorld Dotum', sans-serif;    
+} */
+
+
+/* .p-3 {
+    font-family: 'KoPubWorld Dotum', sans-serif;   
+}
+
+div.container-xxl.d-flex.flex-column.flex-shrink-0.p-3 {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]{
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}             */
 /* [data-testid="block-container"] {
     padding-left: 2rem;
     padding-right: 2rem;
