@@ -78,7 +78,6 @@ def run_level(df):
     years = sch_df['연도'].unique()
     
     # 레이아웃 나누기
-    st.set_page_config(layout="wide")
     header = st.container()
     col = st.columns((0.5, 4, 1.5), gap='medium')
 
