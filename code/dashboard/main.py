@@ -11,6 +11,7 @@ import pandas as pd
 import polars as pl
 import plotly.express as px
 from function import *  # function.py 파일에서 모든 함수 불러오기 
+from function_school_level import *  # function_school_level.py 파일에서 모든 함수 불러오기 
 import school_accident_details, school_level, school_year, school_region # 각 페이지 구성 py 파일 가져오기
 
 
