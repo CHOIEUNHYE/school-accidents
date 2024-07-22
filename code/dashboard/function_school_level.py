@@ -63,17 +63,17 @@ def create_h_barchart(df, year, x_col, y_col, y_order):
         hovertemplate=f'<b>%{{y}}</b><br>사고수: %{{x:,}}건<extra></extra>'
         ))
     fig.update_layout(
-        xaxis_title=x_col,
-        yaxis_title='',
-        xaxis_title_font=dict(
-            family='KoPubWorld돋움체_Pro', 
-            color='black'
+        font=dict(
+            family='KoPubWorld돋움체_Pro',
             ),
-        yaxis_title_font=dict(
-            family='KoPubWorld돋움체_Pro', 
-            color='black'
+        hoverlabel=dict(
+            font_size=14,
+            font_family="KoPubWorld돋움체_Pro"
             ),
-        yaxis=dict(categoryorder='array', categoryarray=y_order),
+        yaxis=dict(
+            categoryorder='array', 
+            categoryarray=y_order
+            ),
         height=400,
         width=800,
         margin=dict(t=50)
@@ -96,10 +96,17 @@ def create_piechart(df, year, name_col, value_col, name_order, colors):
     fig.update_traces(texttemplate='%{label}<br><span style="font-size:15px">%{percent:.2%}</span>',
                       hovertemplate='<b>%{label}</b><br>사고수: %{value}건<br>')
     fig.update_layout(
+        font=dict(
+            family='KoPubWorld돋움체_Pro',
+            ),
+        hoverlabel=dict(
+            font_size=14,
+            font_family="KoPubWorld돋움체_Pro"
+            ),
         showlegend=False,
         height=400,
         width=400,
-        margin=dict(t=100, r=50)
+        margin=dict(t=120, r=60)
         )
     
     return fig
@@ -138,7 +145,7 @@ def create_pyramid_chart(df, year, x_col, y_col):
         bargap=0.01,
         legend_orientation='h',
         legend_x=1,
-        legend_y=1,
+        legend_y=1.24,
         legend_xanchor='right',
         legend_yanchor='top',
         font=dict(
@@ -146,15 +153,15 @@ def create_pyramid_chart(df, year, x_col, y_col):
             color='black'
             ),
         hoverlabel=dict(
-            font_size=12,
+            font_size=14,
             font_family="KoPubWorld돋움체_Pro"
             ),
         paper_bgcolor='white',
         plot_bgcolor='white',
         legend_title_text=' ',
-        height=400,
+        height=430,
         width=800,
-        margin=dict(t=60, r=30)
+        margin=dict(t=85, r=30)
         )
 
     hover_text_male = '<b>%{y}</b><br>사고수: %{customdata[0]:.f}건<br>퍼센트: %{customdata[1]:.2f}%'
@@ -170,7 +177,7 @@ def create_pyramid_chart(df, year, x_col, y_col):
         )
     fig.update_xaxes(
         showticklabels=True,
-        title_text="사고수",
+        title_text="",
         title_font=dict(size=12)  
         )
     fig.update_yaxes(
@@ -190,7 +197,7 @@ def create_donut_chart(df, year, sch_level, name_col, value_col, name_order, col
         hole=0.4,
         category_orders={name_col: name_order},
         color=name_col,
-        color_discrete_map=colors
+        color_discrete_map=colors,
         )
     fig.update_layout(
         annotations=[
@@ -204,11 +211,15 @@ def create_donut_chart(df, year, sch_level, name_col, value_col, name_order, col
             ]
         )
     fig.update_traces(texttemplate='%{label}<br><span style="font-size:13px">%{percent:.2%}</span>',
-                      hovertemplate='<b>%{label}</b><br>사고수: %{value}건<br>')
+                      hovertemplate='<b>%{label}</b><br>사고수: %{value:,}건<br>')
     fig.update_layout(
         font=dict(
             family='KoPubWorld돋움체_Pro',
             color='black'
+            ),
+        hoverlabel=dict(
+            font_size=14,
+            font_family="KoPubWorld돋움체_Pro"
             ),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -233,7 +244,7 @@ def create_stacked_barchart(df, school_type_categories, palette, months):
             hovertemplate='<b>%{x}</b><br>' +
                           '학교급: ' + category + '<br>' +
                           '사고수: %{customdata}건<br>' +
-                          '퍼센트: %{y}<extra></extra>'
+                          '퍼센트: %{y:.2f}%<extra></extra>'
                           ))
     fig.update_layout(
         barmode='stack',
@@ -244,7 +255,7 @@ def create_stacked_barchart(df, school_type_categories, palette, months):
             color='black'
             ),
         hoverlabel=dict(
-            font_size=13,
+            font_size=14,
             font_family="KoPubWorld돋움체_Pro"
             ),
         paper_bgcolor='white',
@@ -262,23 +273,26 @@ def create_stacked_barchart(df, school_type_categories, palette, months):
             categoryorder='array',
             categoryarray=months
             ),
-        margin=dict(t=30, l=210)
+        margin=dict(t=30)
         )
 
     return fig
 
-# 학교급별 사고 내용 분석 시각화
 def create_sub_barchart(df, category_col, value_col, colors):
     df = df[df['학교급'].notna()]
     unique_school_levels = df['학교급'].unique()
-    num_cols = len(unique_school_levels) 
     
+    num_rows = 2
+    num_cols = 3
     fig = make_subplots(
-        rows=1, cols=num_cols,  
+        rows=num_rows, cols=num_cols,  
         subplot_titles=unique_school_levels,  
-        horizontal_spacing=0.05
+        horizontal_spacing=0.15,
+        vertical_spacing=0.3
         )
-    for i, school_level in enumerate(unique_school_levels, start=1):
+    for i, school_level in enumerate(unique_school_levels):
+        row = i // num_cols + 1
+        col = i % num_cols + 1
         level_data = df[df['학교급'] == school_level].sort_values(value_col, ascending=False).head(5)
         fig.add_trace(
             go.Bar(
@@ -286,37 +300,38 @@ def create_sub_barchart(df, category_col, value_col, colors):
                 x=level_data[value_col],
                 name=school_level,
                 orientation='h',
-                marker=dict(color=colors.get(school_level, '#000000')),  
+                marker=dict(color=colors.get(school_level)),  
                 hovertemplate='<b>%{y}</b><br>사고수: %{x:,}건<extra></extra>',   
-                width=0.6
+                width=0.8
                 ),
-            row=1, col=i
+            row=row, col=col
             )
     fig.update_layout(
         barmode='stack',
         font=dict(
-            {'family':'KoPubWorld돋움체_Pro',
-            'color':'black',
-            'size':20}
+            family='KoPubWorld돋움체_Pro',
+            color='black',
+            size=20
             ),
         hoverlabel=dict(
-            font_size=15,
+            font_size=14,
             font_family="KoPubWorld돋움체_Pro"
             ),
-        height=400,
-        width=2000,
+        height=600,  
+        width=1200,  
         showlegend=False,
         margin=dict(t=100)
         )
     fig.update_yaxes(
+        autorange="reversed",
         ticksuffix='  ',
         title_font_family='KoPubWorld돋움체 Medium',
-        tickfont=dict(size=12)
+        tickfont=dict(size=14)
         )   
     fig.update_xaxes(
         title=' ',
         title_font_family='KoPubWorld돋움체 Medium',
-        tickfont=dict(size=12)
+        tickfont=dict(size=14)
         )
     
     return fig
