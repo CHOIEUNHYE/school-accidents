@@ -8,7 +8,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import geopandas as gpd
 import matplotlib.pyplot as plt
-import folium
 import json
 from function_하윤 import *  # function.py 파일에서 모든 함수 불러오기 
 

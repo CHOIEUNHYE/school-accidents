@@ -7,7 +7,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import geopandas as gpd
 import matplotlib.pyplot as plt
-import folium
 import json
 
 

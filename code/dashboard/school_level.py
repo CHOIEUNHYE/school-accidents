@@ -7,7 +7,7 @@ import polars as pl
 import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-from function import *  # function.py 파일에서 모든 함수 불러오기 
+from function_school_level import *  # function.py 파일에서 모든 함수 불러오기 
 
 def run_level(df):
     # 데이터 전처리
