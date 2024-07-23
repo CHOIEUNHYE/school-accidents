@@ -23,7 +23,12 @@ def run_details(df):
         학교안전사고 내용 분석
     </h1>
     ''', unsafe_allow_html=True)
+
+
+    st.write('''발생한 학교안전사고의 구체적인 내용에 대한 정보를 제공합니다. 사고와 관련하여 사고가 언제 어디에서 많이 발생했는지, 사고 당시 어떤 활동을 하고 있었는지 등
+             구체적인 안전사고의 내용에 대한 교차분석 결과를 확인할 수 있습니다. 그래프에서 구체적인 정보를 확인하고 싶은 항목에 마우스 커서를 올리면 해당 항목에 대한 정보를 확인할 수 있습니다.''')
     
+    st.markdown('#####')
     st.markdown('''
     <h2 style="font-family: 'KoPubWorld Dotum', sans-serif;">
         장소별 안전사고 발생 현황
@@ -62,26 +67,38 @@ def run_details(df):
         tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["5개년 전체","2019년", "2020년", "2021년", "2022년","2023년"])
         ## 탭별 차트 그리기
         def acc_spot_chart_oneyear(one_year_df):
-            col = st.columns((4.5,2), gap='medium')
+            col = st.columns((4.5,3), gap='medium')
             with col[0] :
-                st.markdown('###') # Adds space
+                st.markdown('###')
                 acc_spot_oneyear_fig = horizontal_chart_one_year(one_year_df,'사고장소')
                 st.plotly_chart(acc_spot_oneyear_fig, theme="streamlit", use_container_width=True)
             with col[1] :
-                st.markdown('##') # Adds space
+                st.markdown('##')
+                st.markdown('##')
+                st.markdown('###')
                 print_df = one_year_df.sort_values(['연도','사고건수'],ascending=[True,False]).reset_index(drop=True)
-                st.dataframe(print_df[['연도','사고장소','사고건수','퍼센트']])
+                print_df['퍼센트'] = print_df['퍼센트'].astype(str)
+                styled_df = style_dataframe(print_df[['연도','사고장소','사고건수','퍼센트']])
+                html_df = styled_df.hide(axis='index').render()
+                st.write(html_df, unsafe_allow_html=True)               
+                # st.dataframe(print_df[['연도','사고장소','사고건수','퍼센트']])
 
         with tab1:
-            col = st.columns((4.5, 2), gap='medium')
+            col = st.columns((4.5, 3), gap='medium')
             with col[0] : 
                 st.markdown('######')
                 acc_spot_chart = acc_spot_5years_chart(acc_spot)
                 st.plotly_chart(acc_spot_chart, theme="streamlit", use_container_width=True)
             with col[1] :
-                st.markdown('##') # Adds space
+                st.markdown('##')
+                st.markdown('###')
                 print_df = acc_spot.sort_values(['연도','사고건수'],ascending=[True,False]).reset_index(drop=True)
-                st.dataframe(print_df[['연도','사고장소','사고건수','퍼센트']])
+                print_df['퍼센트'] = print_df['퍼센트'].astype(str)
+                styled_df = style_dataframe(print_df[['연도','사고장소','사고건수','퍼센트']])
+                # html_df = styled_df.to_html(index=False)
+                html_df = styled_df.hide(axis='index').render()
+                st.write(html_df, unsafe_allow_html=True)                 
+                # st.dataframe(print_df[['연도','사고장소','사고건수','퍼센트']])
 
         with tab2:
             acc_spot_chart_oneyear(acc_spot_2019)
@@ -95,7 +112,10 @@ def run_details(df):
             acc_spot_chart_oneyear(acc_spot_2023)
 
     st.markdown('##')
-    st.subheader('장소별 사고부위 & 사고당시활동')
+    st.subheader('장소에 따른 사고부위 및 사고당시활동')
+    st.write('''사고 장소에 따라 사고부위와 사고당시활동 양상이 어떻게 달라지는지에 대한 정보를 제공합니다. 각 장소에서 학생들이 어떤 부위를 많이 다치는지, 어떤 활동을 하다가 다치는지를 확인할 수 있습니다.
+             안전사고 발생 시 가장 많이 다치는 사고부위 상위 5개 항목과 안전사고 발생이 많은 활동 상위 5개 항목이 제공됩니다.
+             ''')
     tab = st.tabs(['사고부위','사고당시활동'])
     with tab[0]:
 
@@ -117,22 +137,9 @@ def run_details(df):
         시간별 안전사고 발생 현황
     </h2>
     ''', unsafe_allow_html=True)
-    # 사고월 컬럼 추가
-    df['사고월'] = df['사고발생일'].apply(lambda x:str(x.month)+'월')
-    # 계절을 결정하는 함수
-    def get_season(date):
-        month = date.month
-        if month in [3, 4, 5]:
-            return '봄'
-        elif month in [6, 7, 8]:
-            return '여름'
-        elif month in [9, 10, 11]:
-            return '가을'
-        else:
-            return '겨울'
+    st.write('''2019년~2023년 5개년간의 시간별 안전사고 발생 현황에 대한 정보를 제공합니다. 
+             사고가 발생한 월, 계절, 학교에서의 특정 활동 시간과 같이 다양한 시간 범주에 따른 안전사고 발생 현황을 상세히 확인할 수 있습니다. ''')
 
-    # 새로운 '계절' 컬럼 추가
-    df['계절'] = df['사고발생일'].apply(get_season)
     time_df=df.copy()
     time_df.loc[(time_df['학교급']=='초등학교')&(time_df['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
     time_df.loc[(time_df['학교급']=='초등학교')&(time_df['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
@@ -145,14 +152,20 @@ def run_details(df):
     acc_month['사고월'] = pd.Categorical(acc_month['사고월'], categories=months, ordered=True)
     acc_month.sort_values('사고월',inplace=True)
 
-    col = st.columns([3,2], gap='medium')
+    col = st.columns([5,4.5], gap='medium')
 
     with col[0] :
-      acc_time_chart = acc_month_fig(acc_month)
-      st.plotly_chart(acc_time_chart, theme="streamlit", use_container_width=True)
+        st.markdown("""
+            <h3 style="text-align: center;">월별 누적 안전사고 수(2019~2023)</h3>
+            """, unsafe_allow_html=True)
+        acc_time_chart = acc_month_fig(acc_month)
+        st.plotly_chart(acc_time_chart, theme="streamlit", use_container_width=True)
       
     
     with col[1] : 
+        st.markdown("""
+            <h3 style="text-align: center;">장소에 따른 월별 안전사고 수(2019~2023)</h3>
+            """, unsafe_allow_html=True)
         # 각 사고월별 총 사고 건수 계산
         total_by_school = time_df.groupby('사고월')['구분'].count()
         # 사고월에 따른 사고장소별 사고건수 카운트
@@ -164,7 +177,8 @@ def run_details(df):
         month_spot_chart = month_spot_fig(month_spot)
         st.plotly_chart(month_spot_chart, theme=None, use_container_width=True)
 
-    st.subheader('계절별 안전사고부위(2019~2023)')
+    st.subheader('계절별 안전사고부위')
+    st.write('''계절에 따른 사고부위 양상에 대한 정보를 제공합니다. 계절별로 학생들이 많이 다치는 부위를 확인하고 적절한 계절별 안전사고 예방 대책을 고안할 수 있습니다. 2019년~2023년 5개년 누적으로 사고 수를 집계하였습니다.''')
     season_body = time_df.groupby(['계절','사고부위']).count()[['구분']].reset_index()
     season_body.columns = ['계절','사고부위','사고건수']
     season_order = ["봄", "여름", "가을", "겨울"]
@@ -173,7 +187,8 @@ def run_details(df):
     season_body_chart = season_body_fig(season_body)
     st.plotly_chart(season_body_chart, theme="streamlit", use_container_width=True)
 
-    st.subheader('계절별 사고당시활동 분포(2019~2023)')
+    st.subheader('계절별 사고당시활동')
+    st.write('''계절에 따른 사고당시활동의 양상에 대한 정보를 제공합니다. 계절별로 학생들이 어떤 활동을 하다가 주로 다치는지를 확인하고 적절한 계절별 안전사고 예방 대책을 고안할 수 있습니다. 2019년~2023년 5개년 누적으로 사고 수를 집계하였습니다.''')
     season_activity = time_df.groupby(['계절','사고당시활동']).count()[['구분']].reset_index()
     season_activity.columns = ['계절','사고당시활동','사고건수']
     season_order = ["봄", "여름", "가을", "겨울"]
@@ -183,10 +198,10 @@ def run_details(df):
     st.plotly_chart(season_activity_chart, theme="streamlit", use_container_width=True)
 
     st.markdown('###')
-    col = col = st.columns([3,3,1])
+    col = col = st.columns([3,3])
     with col[0]:
         st.subheader('사고시간 워드클라우드')
-        st.write('학교안전사고가 많이 발생하는 시간일수록 단어의 크기가 큽니다.')
+        st.write('학교안전사고가 발생한 시간에 대한 정보를 워드클라우드로 제공합니다. 학교안전사고가 많이 발생하는 시간일수록 단어의 크기가 커집니다. 2019년~2023년 5개년 누적으로 사고 수를 집계하였습니다.')
         st.markdown('#####')
         st.image('component/img/워드클라우드3.png')
     with col[1]:
@@ -197,7 +212,7 @@ def run_details(df):
         
         acc_time_chart = acc_time_top5_fig(acc_time_analysis)
         st.subheader('학교안전사고발생 시간 TOP 5')
-        st.markdown('비슷한 시간 분류의 경우 하나의 분류로 묶어서 집계했습니다.<br>예: [체육수업, 체육활동] => 체육활동으로 통일', unsafe_allow_html=True)
+        st.markdown('학교안전사고가 많이 발생한 학교 활동 시간 상위 5개의 항목을 제공합니다. 비슷한 시간 분류의 경우 하나의 분류로 묶어서 집계했습니다. (예시: [체육수업, 체육활동] => 체육활동으로 통일)', unsafe_allow_html=True)
         st.plotly_chart(acc_time_chart, theme="streamlit", use_container_width=True)
 
     ## 안전사고 발생 Top 5 사고시간 데이터만 추출
@@ -205,7 +220,8 @@ def run_details(df):
     time_analysis_other_df = time_analysis_df[time_analysis_df['사고시간'].isin(['체육활동','식사시간','휴식시간 및 청소시간','수업시간','학교행사'])]
     time_analysis_how_df = time_analysis_other_df.groupby(['사고시간','사고당시활동']).count()[['구분']].reset_index()
     time_tree_map_chart = time_tree_map(time_analysis_how_df)
+    st.markdown('######')
     st.subheader('사고시간별 사고 당시 활동 분포')
-    st.markdown('안전사고 많이 발생한 시간 상위 5항목의 사고 당시 활동의 분포에 대한 정보를 제공합니다. 그래프에서 특정 시간 항목을 선택할 경우 그래프 상에서 해당 시간만을 기준으로 하여 사고 당시활동의 분포를 확인할 수 있습니다.', unsafe_allow_html=True)
+    st.markdown('학교안전사고가 많이 발생한 시간 상위 5개의 항목에 대해 사고 당시 활동의 분포에 대한 정보를 제공합니다. 학교안전사고가 발생한 시간별로 사고의 원인이 되는 활동의 분포를 확인할 수 있습니다. 그래프에서 특정 시간 항목을 선택할 경우 해당 시간만을 기준으로 하여 사고 당시 활동의 분포를 확인할 수 있습니다.', unsafe_allow_html=True)
     st.plotly_chart(time_tree_map_chart, theme="streamlit", use_container_width=True)
     
