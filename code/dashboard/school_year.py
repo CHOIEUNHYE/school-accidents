@@ -8,7 +8,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import geopandas as gpd
 import matplotlib.pyplot as plt
-import folium
 import json
 from function_하윤 import *  # function.py 파일에서 모든 함수 불러오기 
 
@@ -27,7 +26,7 @@ def run_year(df):
 
 
     st.title('연도별 사고 현황 분석')
-    st.write("설명")
+    st.write("2019년~2023년 간의 학교 안전 사고 데이터를 분석합니다.")
 
 
 
@@ -37,7 +36,7 @@ def run_year(df):
     with col[0] :
         st.markdown('#### 사고 발생 현황 ') 
         # 탭 추가
-        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['5년 통합', '2019년', '2020년', '2021년', '2022년', '2023년'])
+        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['5개년 통합', '2019년', '2020년', '2021년', '2022년', '2023년'])
         
         # 5개년 통합
         with tab1:
@@ -78,35 +77,7 @@ def run_year(df):
 
 
 
-            # 연도별 월별 heatmap 생성
-            def monthly_counts2(df):
-                df['사고발생일'] = pd.to_datetime(df['사고발생일'])
-                return df.groupby(df['사고발생일'].dt.month).size().reset_index(name='사고 건수')
-            
-            monthly_counts_list = [monthly_counts2(df).rename(columns={'사고 건수': year}) for df, year in zip(dataframes, years)]
 
-            merged_df = pd.concat(monthly_counts_list, axis=1, join='outer')
-            merged_df = merged_df.loc[:, ~merged_df.columns.duplicated()]
-
-            merged_df = merged_df.set_index('사고발생일')
-            merged_df.index = merged_df.index.map(lambda x: f'{x}월')
-            merged_df = merged_df.fillna(0)
-            colorscale = [[0, '#F7FBFC'], [0.2, '#E6F3F9'], [0.4, '#D6E6F2'], [0.6, '#B9D7EA'], [0.8, '#A2C5E2'], [1, '#769FCD']]
-
-            fig = go.Figure(data=go.Heatmap(
-                   z=merged_df.values, x=merged_df.columns, y=merged_df.index[::-1],
-                   colorscale=colorscale, text=merged_df.values, texttemplate="%{z:,.0f}",
-                   hovertemplate='<b>%{x}년 %{y}</b><br>사고 건수: %{z:,.0f} 건<extra></extra>',))
-            fig.update_layout(font=dict(family="KoPubWorld돋움체_Pro", size=12))
-
-            # 그래프 출력
-            st.markdown('#### 연도별 월별 사고 발생 현황 ') 
-            st.plotly_chart(fig)
-
-
-
-
-        
 
         # 연도별 월별 사고 건수 
         def plot_monthly_accidents(df, year, color):
@@ -131,61 +102,22 @@ def run_year(df):
         monthly_counts2021 = plot_monthly_accidents(df_2021, 2021, '#c3b7eb')
         monthly_counts2022 = plot_monthly_accidents(df_2022, 2022, '#9590e6')
         monthly_counts2023 = plot_monthly_accidents(df_2023, 2023, '#837ed5')
-        
-        # 연도별 사고 현황 분석
-        def month_analysis(year_df):
-            st.markdown('##### 사고 시간과 사고 장소 ')
-            st.write("파이차트 크기 수정이 필요...")
-            col = st.columns([3,3], gap='medium')
-            with col[0] :
-                create_pie_chart(count_to(year_df['사고시간']), '사고시간')
-            with col[1] :
-                create_pie_chart(count_to(year_df['사고장소']), '사고장소')
-
-            st.markdown('##')
-
-            st.markdown('##### 사고 부위와 형태 ')
-            col = st.columns([3,3], gap='medium')
-            with col[0] :
-                create_pie_chart(count_to(year_df['사고부위']), '사고부위')
-            with col[1] :
-                create_pie_chart(count_to(year_df['사고형태']), '사고형태')
-
-            st.markdown('##')
-
-            st.markdown('##### 사고 당시 활동과 매개물 ')
-            col = st.columns([3,3], gap='medium')
-            with col[0] :
-                create_pie_chart(count_to(year_df['사고당시활동']), '사고당시활동')
-            with col[1] :
-                create_pie_chart(count_to(year_df['사고매개물'].str.split('(').str[0]), '사고매개물')
-            
 
         # 2019년
         with tab2:
             st.plotly_chart(monthly_counts2019)
-            st.markdown('##')
-            month_analysis(df_2019)
         # 2020년
         with tab3:
             st.plotly_chart(monthly_counts2020)
-            st.markdown('##')
-            month_analysis(df_2020)
         # 2021년
         with tab4:
             st.plotly_chart(monthly_counts2021)
-            st.markdown('##')
-            month_analysis(df_2021)
         # 2022년
         with tab5:
             st.plotly_chart(monthly_counts2022)
-            st.markdown('##')
-            month_analysis(df_2022)
         # 2023년
         with tab6:
             st.plotly_chart(monthly_counts2023)
-            st.markdown('##')
-            month_analysis(df_2023)
 
 
 
