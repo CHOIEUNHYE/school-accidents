@@ -236,8 +236,6 @@ def run_level(df):
     
     # sch_month_acci 데이터프레임
     sch_month_acci = sch_df.copy()
-    # 사고월 컬럼 추가
-    sch_month_acci['사고월'] = sch_month_acci['사고발생일'].apply(lambda x:str(x.month)+'월')
     # 초등학교 저학년/고학년 구분
     sch_month_acci.loc[(sch_month_acci['학교급']=='초등학교')&(sch_month_acci['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
     sch_month_acci.loc[(sch_month_acci['학교급']=='초등학교')&(sch_month_acci['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
