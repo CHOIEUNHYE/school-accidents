@@ -22,6 +22,26 @@ season_color = [spring,summer,fall,winter]
 # 계절별 색깔 지정
 season_onecolor = [spring[2],summer[1],fall[1],winter[2]]
 
+
+def style_dataframe(df):
+    return df.style.set_table_styles(
+        [{
+            'selector': 'td, th',
+            'props': [
+                ('font-family', 'KoPubWorld Dotum, sans-serif'),
+                ('font-size', '13px')
+            ]
+        },
+        {            
+            'selector': 'th',
+            'props': [
+            ('background-color', '#5C7DD2'),
+            ('color', 'white'),
+            ('font-size', '13px')
+            ]
+        }]
+    )
+
 def get_grouped_count_spot(df,col,year):
     new_df = df.groupby('사고장소').count()[['구분']].reset_index().replace('교외활동','교외')
     new_df = new_df.groupby('사고장소').sum()[['구분']]
@@ -251,13 +271,13 @@ def acc_month_fig(df):
                 hovertemplate='사고월 : %{x}<br>'+'사고건수 : %{y}건')
 
     fig.update_layout(
-                title={
-                'text': "<b>5개년 월별 안전사고 누적 건수 (2019~2023)</b>",
-                'x': 0.5,
-                'xanchor': 'center',
-                'yanchor': 'top',
-                'font':{'size':24,'family':'KoPubWorld돋움체_Pro'}
-                },
+                # title={
+                # 'text': "<b>5개년 월별 안전사고 누적 건수 (2019~2023)</b>",
+                # 'x': 0.5,
+                # 'xanchor': 'center',
+                # 'yanchor': 'top',
+                # 'font':{'size':24,'family':'KoPubWorld돋움체_Pro'}
+                # },
                 font=dict({'family':'KoPubWorld돋움체_Pro',
                         'color':'black'}), #전체 폰트 설정(로컬 폰트 사용 가능)
                 hoverlabel=dict(        #호버 박스 폰트 설정
@@ -269,8 +289,6 @@ def acc_month_fig(df):
                 plot_bgcolor='white',    # 플롯 배경색
                 # yaxis_ticksuffix=" ",
                 )
-
-
 
 
     fig.update_xaxes(title=' ',
@@ -295,11 +313,8 @@ def month_spot_fig(df): # 계절별 사고장소
         z=values,
         x=months,
         y=spots,
-        colorscale=['#e5edfb', '#ccdbf7', '#b2c9f3', '#99b6ef', '#7fa4eb', '#6592e7', '#4c80e3', '#326edf']
-
-    ,  # 색상 스케일 설정
-        colorbar=dict(title='사고건수',
-                        titlefont=dict(size=12)),  # colorbar 설정
+        colorscale=['#e5edfb', '#ccdbf7', '#b2c9f3', '#99b6ef', '#7fa4eb', '#6592e7', '#4c80e3', '#326edf','#3266C8'],
+        showscale=False  # Colorbar 제거
     ))
     fig.update_traces(
                 hovertemplate='사고장소 : %{y}'+'<br>사고월 : %{x}'+'<br>사고건수 : %{z:.f}건<extra></extra>')
@@ -319,8 +334,9 @@ def month_spot_fig(df): # 계절별 사고장소
                 yaxis=dict(
                 title=' ',
                 title_font_family='KoPubWorld돋움체 Medium',
-                tickfont=dict(size=15),
-            ),
+                tickfont=dict(size=15,color='#808495'),
+                ),
+                xaxis=dict(tickfont=dict(color='#808495'))
                 )
 
 
@@ -385,63 +401,7 @@ def  season_body_fig(df): #계절별 사고부위
     # 차트 보여주기
     return fig
 
-# def season_activity_fig(df): # 계절별 사고당시활동
-#     # 계절별로 데이터프레임 나누기
-#     seasons = df['계절'].unique()
 
-#     # 서브플롯 생성
-#     fig = make_subplots(rows=1, cols=4, subplot_titles=seasons, specs=[[{'type': 'pie'}, {'type': 'pie'}, {'type': 'pie'}, {'type': 'pie'}]],
-#                         horizontal_spacing=0.05)
-
-#     # 각 계절에 대해 파이 차트 추가
-#     for i, season in enumerate(seasons):
-#         season_df = df[df['계절'] == season]
-#         fig.add_trace(go.Pie(
-#             labels=season_df['사고당시활동'],
-#             values=season_df['사고건수'],
-#             name=season,
-#             textinfo='percent+label',
-#             marker=dict(colors=['#D4D4DB','#BABAC0',"9F9FA4"]+season_color[i][::-1])
-#         ), row=1, col=i+1)
-
-#     # hovertemplate 설정
-#     fig.update_traces(hovertemplate='<b>%{label}</b><br>사고건수 : %{value}건<br>퍼센트 : %{percent}%<extra></extra>')
-
-
-#     # 레이아웃 업데이트
-#     fig.update_layout(
-#         # title={
-#         # 'text': "<b>계절별 사고당시활동 분포 (2019~2023)</b><br><br>",
-#         # 'yanchor': 'top',
-#         # 'font':{'size':24,'family':'KoPubWorld돋움체_Pro'}
-#         # },
-#         font=dict(
-#             family='KoPubWorld돋움체_Pro',
-#             color='black',
-#             size=15
-#         ),
-#         hoverlabel=dict(
-#             font_size=15,
-#             font_family="KoPubWorld돋움체_Pro"
-#         ),
-#         paper_bgcolor='white',
-#         plot_bgcolor='white',
-#         showlegend =False,
-#         xaxis=dict(
-#             title=' ',
-#             title_font_family='KoPubWorld돋움체 Medium',
-#             # tickfont=dict(size=15),
-#             categoryorder='array',
-#             categoryarray=seasons
-#         ),
-#         margin=dict(l=50,b=120)  # 여백 조정
-#     )
-#     # 각 서브플롯 제목의 텍스트 크기 업데이트
-#     for annotation in fig['layout']['annotations']:
-#         annotation['font'] = dict(size=20)  # 원하는 크기로 설정
-
-#     # 차트 보여주기
-#     return fig
 
 def season_activity_fig(df): # 계절별 사고당시활동
     # 계절별로 데이터프레임 나누기
