@@ -2,6 +2,39 @@ html, body, iframe, h1, h2, h3, h4, p, b, a [class*="css"] {
     font-family: 'KoPubWorld Dotum', sans-serif;
 }
 
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: none;
+}
+thead {
+    border:none;
+    display: block;
+}
+
+tbody {
+    display: block;
+    overflow: auto;
+    height: 260px;
+}
+tbody tr:nth-child(2n+1) {
+    background-color: #f9f8f8;
+}
+
+/* tr:first-child {
+    border-top: 1.5px solid black;
+} */
+td {
+border: none !important;
+}
+th, td {
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+    font-family: 'KoPubWorld Dotum, sans-serif';
+    font-size: 17px;
+}
+
 /* tab */
 /* .st-bd {
     color: rgb(53, 114, 194);
@@ -56,10 +89,12 @@ div.container-xxl.d-flex.flex-column.flex-shrink-0.p-3 {
 /* Metric */
 [data-testid="stMetric"] {
     text-align: center;
+    padding-bottom: 0.8rem;
 }
          
 .st-emotion-cache-1whx7iy p {
-    font-size: 20px;
+    font-size: 18px;
+
 }
          
 [data-testid="stMetricLabel"] {
@@ -70,9 +105,10 @@ div.container-xxl.d-flex.flex-column.flex-shrink-0.p-3 {
             
 [data-testid="stMetricValue"] {
     font-family: 'KoPubWorld Dotum', sans-serif;
-    font-size: 20;
+    font-size: 30px;
+    font-weight: bold;
 }
-         
+      
 .st-emotion-cache-1wivap2 {
     font-family: 'KoPubWorld Dotum', sans-serif;
 }
