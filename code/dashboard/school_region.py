@@ -35,7 +35,7 @@ def create_map(df, location_column, parameter_column):
         opacity=0.5,
         labels={parameter_column: parameter_column}
     )
-    
+
     fig.update_layout(
         margin={"r":0,"t":0,"l":0,"b":0},
         font=dict({'family':'KoPubWorld돋움체 Medium','color':'black'}), 
@@ -107,8 +107,6 @@ def run_region(df):
 
 
 
-
-
     st.markdown('''
     <h2 style="font-family: 'KoPubWorld Dotum', sans-serif;">
         지역별 안전사고 발생 현황
@@ -124,95 +122,92 @@ def run_region(df):
     # 탭 만들기
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["5개년 통합","2019년", "2020년", "2021년", "2022년","2023년"])
 
-    with tab1:
-        col = st.columns((1.5, 4.5), gap='medium')
-        with col[0]:
-            st.markdown('#### 지역별 사고 건수 ')
-            create_chart(CTPRVN_count, '지역')
-            
-        with col[1]:
-            st.markdown('####')
-            create_map(CTPRVN_count_geo, '지역', '건수')  
-            
-
-
-    with tab2:
-        col = st.columns((1.5, 4.5), gap='medium')
-        with col[0]:
-            st.markdown('#### 2019년 지역별 사고 건수 ')
-            create_chart(geodf2019, '지역')
-        
-        with col[1]:
-            st.markdown('#### 2019년 지역별 학생 수 대비 사고 건수')
-            create_map(CTPRVN_2019, '지역', '사고건수/학생수')
-            
-    
-
-    with tab3:
-        col = st.columns((4.5, 1.5), gap='medium')
-        with col[0]:
-            st.markdown('#### 2020년 지역별 학생 수 대비 사고 건수')
-            create_map(CTPRVN_2020, '지역', '사고건수/학생수')
-        
-        with col[1]:
-            st.markdown('#### 2020년 지역별 사고 건수 ')
-            create_chart(geodf2020, '지역')
-
-
-    with tab4:
-        col = st.columns((4.5, 1.5), gap='medium')
-        with col[0]:
-            st.markdown('#### 2021년 지역별 학생 수 대비 사고 건수')
-            create_map(CTPRVN_2021, '지역', '사고건수/학생수')
-        with col[1]:
-            st.markdown('#### 2021년 지역별 사고 건수 ')
-            create_chart2(geodf2021, '지역')
-
-
-
-    with tab5:
-        col = st.columns((4.5, 1.5), gap='medium')
-        with col[0]:
-            st.markdown('#### 2022년 지역별 학생 수 대비 사고 건수')
-            create_map(CTPRVN_2022, '지역', '사고건수/학생수')
-        with col[1]:
-            st.markdown('#### 2022년 지역별 사고 건수 ')
-            create_chart2(geodf2022, '지역')
-
-
-
-    with tab6:
-        col = st.columns((1.5, 4.5), gap='medium')
-        with col[0]:
-            st.markdown('#### 2023년 지역별 사고 건수 ')
-            create_chart(geodf2023, '지역')
-        
-        with col[1]:
-            st.markdown('#### 2023년 지역별 학생 수 대비 사고 건수')
-            create_map(CTPRVN_2023, '지역', '사고건수/학생수')
-
-
-    st.divider()
+    region_count = df.groupby(['연도', '지역']).agg(총사고수=('사고발생일', 'count')).reset_index()
+    region_count['지역'] = pd.Categorical(region_count['지역'])
+    region_count = region_count.sort_values(['연도', '지역']).reset_index(drop=True)
+    region_count['전년대비증감률'] = region_count.groupby('지역')['총사고수'].pct_change().fillna(0) * 100
 
     # 처리할 지역 목록
     regions = df['지역'].unique()
     region_results = {}
-
-    # 각 지역별로 데이터 필터링 및 처리
     for region in regions:
         region_df = df[df['지역'] == region]
         processed_data = count_to(region_df['교육청'])
         processed_data['교육청'] = processed_data['교육청'].str.replace('교육지원청', '', regex=False)
         region_results[region] = processed_data
-    
-    # 탭 만들기
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["서울","부산", "대구", "인천", "대전","광주", "울산"])
+
+
 
     with tab1:
-        create_chart(region_results['서울'], '교육청')
+        col = st.columns((2, 1, 3), gap='medium')
+
+        with col[0]:
+            st.markdown('#### 지역별 사고 건수 ')
+            create_chart(CTPRVN_count, '지역')
+
+        with col[1]:
+            st.markdown('####')
+            for index, row in CTPRVN_count.iterrows():
+                reion = row['지역']
+                count = row['건수']
+                rate = row['퍼센트(%)']
+                    
+                st.markdown(f"""
+                <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 150px;">
+                    <p style="margin: 0; padding: 0; font-size: 15px; font-weight: bold; width: 50px; text-align: left;">{reion}</p>
+                    <p style="margin: 0; padding: 0; font-size: 14px; width: 50px; text-align: center;">{count}</p>
+                    <p style="margin: 0; padding: 0; font-size: 8px; width: 50px; text-align: right; color: 'grey';"> {rate:.2f}%</p>
+                 </div>
+                """, unsafe_allow_html=True)
+            
+        with col[2]:
+            st.markdown('####')
+            create_map(CTPRVN_count_geo, '지역', '건수')  
+            
+
+    # 연도별 탭 구성
+    def display_year_tab(year, geodf, mapdf):
+        col = st.columns((2, 1, 3), gap='medium')
+
+        with col[0]:
+            st.markdown(f'#### {year}년 지역별 사고 건수 ')
+            create_chart(geodf, '지역')
+        
+        with col[1]:
+            st.markdown('####')
+            region_chart(region_count, year)
+
+        with col[2]:
+            st.markdown(f'#### {year}년 지역별 학생 수 대비 사고 건수')
+            create_map(mapdf, '지역', '사고건수/학생수')
+
+    
     with tab2:
-        create_chart(region_results['부산'], '교육청')
+        geo_order2019 = geodf2019['지역'].tolist()
+        region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2019, ordered=True)
+        region_count = region_count.sort_values('지역').reset_index(drop=True)
+        display_year_tab(2019, geodf2019, CTPRVN_2019)
+
     with tab3:
-        create_chart(region_results['대구'], '교육청')
+        geo_order2020 = geodf2020['지역'].tolist()
+        region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2020, ordered=True)
+        region_count = region_count.sort_values('지역').reset_index(drop=True)
+        display_year_tab(2020, geodf2020, CTPRVN_2020)
+    
     with tab4:
-        create_chart(region_results['인천'], '교육청')
+        geo_order2021 = geodf2021['지역'].tolist()
+        region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2021, ordered=True)
+        region_count = region_count.sort_values('지역').reset_index(drop=True)
+        display_year_tab(2021, geodf2021, CTPRVN_2021)
+    
+    with tab5:
+        geo_order2022 = geodf2022['지역'].tolist()
+        region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2022, ordered=True)
+        region_count = region_count.sort_values('지역').reset_index(drop=True)
+        display_year_tab(2022, geodf2022, CTPRVN_2022)
+
+    with tab6:
+        geo_order2023 = geodf2023['지역'].tolist()
+        region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2023, ordered=True)
+        region_count = region_count.sort_values('지역').reset_index(drop=True)
+        display_year_tab(2023, geodf2023, CTPRVN_2023)
