@@ -64,11 +64,11 @@ def create_h_barchart(df, year, x_col, y_col, y_order):
         ))
     fig.update_layout(
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             ),
         hoverlabel=dict(
             font_size=14,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
             ),
         yaxis=dict(
             categoryorder='array', 
@@ -97,11 +97,11 @@ def create_piechart(df, year, name_col, value_col, name_order, colors):
                       hovertemplate='<b>%{label}</b><br>사고수: %{value}건<br>')
     fig.update_layout(
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             ),
         hoverlabel=dict(
             font_size=14,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
             ),
         showlegend=False,
         height=400,
@@ -149,12 +149,12 @@ def create_pyramid_chart(df, year, x_col, y_col):
         legend_xanchor='right',
         legend_yanchor='top',
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             color='black'
             ),
         hoverlabel=dict(
             font_size=14,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
             ),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -214,12 +214,12 @@ def create_donut_chart(df, year, sch_level, name_col, value_col, name_order, col
                       hovertemplate='<b>%{label}</b><br>사고수: %{value:,}건<br>')
     fig.update_layout(
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             color='black'
             ),
         hoverlabel=dict(
             font_size=14,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
             ),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -251,12 +251,12 @@ def create_stacked_barchart(df, school_type_categories, palette, months):
         height=500,
         width=1100,
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             color='black'
             ),
         hoverlabel=dict(
             font_size=14,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
             ),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -268,7 +268,7 @@ def create_stacked_barchart(df, school_type_categories, palette, months):
             ),
         xaxis=dict(
             title=' ',
-            title_font_family='KoPubWorld돋움체 Medium',
+            title_font_family='KoPubWorld Dotum',
             tickfont=dict(size=17),
             categoryorder='array',
             categoryarray=months
@@ -309,13 +309,13 @@ def create_sub_barchart(df, category_col, value_col, colors):
     fig.update_layout(
         barmode='stack',
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             color='black',
             size=20
             ),
         hoverlabel=dict(
             font_size=14,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
             ),
         height=600,  
         width=1200,  
@@ -325,12 +325,12 @@ def create_sub_barchart(df, category_col, value_col, colors):
     fig.update_yaxes(
         autorange="reversed",
         ticksuffix='  ',
-        title_font_family='KoPubWorld돋움체 Medium',
+        title_font_family='KoPubWorld Dotum',
         tickfont=dict(size=14)
         )   
     fig.update_xaxes(
         title=' ',
-        title_font_family='KoPubWorld돋움체 Medium',
+        title_font_family='KoPubWorld Dotum',
         tickfont=dict(size=14)
         )
     
