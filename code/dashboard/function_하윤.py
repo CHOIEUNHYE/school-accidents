@@ -79,7 +79,7 @@ def create_chart(dfs, theme):
     return st.plotly_chart(fig)
 
 
-# 지역 chart 생성
+# 지역 chart 생성 - 시도
 def region_chart(df, year):
                 current_data = df[df['연도'] == year]
                 
@@ -93,6 +93,26 @@ def region_chart(df, year):
                     st.markdown(f"""
                     <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 150px;">
                         <p style="margin: 0; padding: 0; font-size: 15px; font-weight: bold; width: 50px; text-align: left;">{reion}</p>
+                        <p style="margin: 0; padding: 0; font-size: 15px; width: 50px; text-align: center;">{count}</p>
+                        <p style="margin: 0; padding: 0; color: {change_color}; font-size: 8px; width: 50px; text-align: right;">{change_icon} {abs(change_rate):.2f}%</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+
+# 지역 chart 생성 - 교육청
+def region_chart_detail(df, year):
+                current_data = df[(df['연도'] == year)]
+                
+                for index, row in current_data.iterrows():
+                    reion = row['교육청']
+                    count = row['총사고수']
+                    change_rate = row['전년대비증감률']
+                    change_color = 'green' if change_rate > 0 else 'grey' if change_rate == 0 else 'red'
+                    change_icon = '↑' if change_rate > 0 else '-' if change_rate == 0 else '↓'
+
+                    st.markdown(f"""
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 300px;">
+                        <p style="margin: 0; padding: 0; font-size: 15px; font-weight: bold; width: 150px; text-align: left;">{reion}</p>
                         <p style="margin: 0; padding: 0; font-size: 15px; width: 50px; text-align: center;">{count}</p>
                         <p style="margin: 0; padding: 0; color: {change_color}; font-size: 8px; width: 50px; text-align: right;">{change_icon} {abs(change_rate):.2f}%</p>
                     </div>

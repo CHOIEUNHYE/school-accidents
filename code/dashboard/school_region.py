@@ -127,26 +127,15 @@ def run_region(df):
     region_count = region_count.sort_values(['연도', '지역']).reset_index(drop=True)
     region_count['전년대비증감률'] = region_count.groupby('지역')['총사고수'].pct_change().fillna(0) * 100
 
-    # 처리할 지역 목록
-    regions = df['지역'].unique()
-    region_results = {}
-    for region in regions:
-        region_df = df[df['지역'] == region]
-        processed_data = count_to(region_df['교육청'])
-        processed_data['교육청'] = processed_data['교육청'].str.replace('교육지원청', '', regex=False)
-        region_results[region] = processed_data
-
-
 
     with tab1:
+        st.markdown('#### 지역별 사고 건수 ')
         col = st.columns((2, 1, 3), gap='medium')
-
-        with col[0]:
-            st.markdown('#### 지역별 사고 건수 ')
+        
+        with col[0]: 
             create_chart(CTPRVN_count, '지역')
 
         with col[1]:
-            st.markdown('####')
             for index, row in CTPRVN_count.iterrows():
                 reion = row['지역']
                 count = row['건수']
@@ -161,17 +150,16 @@ def run_region(df):
                 """, unsafe_allow_html=True)
             
         with col[2]:
-            st.markdown('####')
             create_map(CTPRVN_count_geo, '지역', '건수')  
-            
+
 
     # 연도별 탭 구성
-    def display_year_tab(year, geodf, mapdf):
+    def display_year_tab(year, yeardf, mapdf):
         col = st.columns((2, 1, 3), gap='medium')
 
         with col[0]:
             st.markdown(f'#### {year}년 지역별 사고 건수 ')
-            create_chart(geodf, '지역')
+            create_chart(count_to(yeardf['지역']), '지역')
         
         with col[1]:
             st.markdown('####')
@@ -180,34 +168,62 @@ def run_region(df):
         with col[2]:
             st.markdown(f'#### {year}년 지역별 학생 수 대비 사고 건수')
             create_map(mapdf, '지역', '사고건수/학생수')
+        
+        st.markdown('####')
+        st.markdown('#### 지역별 세부 현황 분석')
+
+        tab_titles = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+        tabs = st.tabs(tab_titles)
+        # 처리할 지역 목록
+        regions = yeardf['지역'].unique()
+        region_results = {}
+        for region in regions:
+            region_df = yeardf[yeardf['지역'] == region]
+            processed_data = count_to(region_df['교육청'])
+            processed_data['교육청'] = processed_data['교육청'].str.replace('교육지원청', '', regex=False)
+            region_results[region] = processed_data
+
+        for tab, title in zip(tabs, tab_titles):
+            with tab:
+                col = st.columns((3, 2), gap='medium')
+                with col[0]:
+                    create_chart(region_results[title], '교육청')
+                with col[1]:
+                    region_detail_count = df[df['지역'] == title].groupby(['연도', '교육청']).agg(총사고수=('사고발생일', 'count')).reset_index()
+                    region_detail_count['교육청'] = pd.Categorical(region_detail_count['교육청'])
+                    region_detail_count['교육청'] = region_detail_count['교육청'].str.replace('교육지원청', '', regex=False)
+                    region_detail_count = region_detail_count.sort_values(['연도', '교육청']).reset_index(drop=True)
+                    region_detail_count['전년대비증감률'] = region_detail_count.groupby('교육청')['총사고수'].pct_change().fillna(0) * 100
+                    region_chart_detail(region_detail_count, year)
+
 
     
     with tab2:
         geo_order2019 = geodf2019['지역'].tolist()
         region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2019, ordered=True)
         region_count = region_count.sort_values('지역').reset_index(drop=True)
-        display_year_tab(2019, geodf2019, CTPRVN_2019)
+        display_year_tab(2019, df_2019, CTPRVN_2019)
 
     with tab3:
         geo_order2020 = geodf2020['지역'].tolist()
         region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2020, ordered=True)
         region_count = region_count.sort_values('지역').reset_index(drop=True)
-        display_year_tab(2020, geodf2020, CTPRVN_2020)
+        display_year_tab(2020, df_2020, CTPRVN_2020)
     
     with tab4:
         geo_order2021 = geodf2021['지역'].tolist()
         region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2021, ordered=True)
         region_count = region_count.sort_values('지역').reset_index(drop=True)
-        display_year_tab(2021, geodf2021, CTPRVN_2021)
+        display_year_tab(2021, df_2021, CTPRVN_2021)
     
     with tab5:
         geo_order2022 = geodf2022['지역'].tolist()
         region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2022, ordered=True)
         region_count = region_count.sort_values('지역').reset_index(drop=True)
-        display_year_tab(2022, geodf2022, CTPRVN_2022)
+        display_year_tab(2022, df_2022, CTPRVN_2022)
 
     with tab6:
         geo_order2023 = geodf2023['지역'].tolist()
         region_count['지역'] = pd.Categorical(region_count['지역'], categories=geo_order2023, ordered=True)
         region_count = region_count.sort_values('지역').reset_index(drop=True)
-        display_year_tab(2023, geodf2023, CTPRVN_2023)
+        display_year_tab(2023, df_2023, CTPRVN_2023)
