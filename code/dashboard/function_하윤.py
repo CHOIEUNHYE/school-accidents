@@ -44,7 +44,7 @@ def count_to(df):
 # bar chart 생성
 def create_chart(dfs, theme):
     # 색상 팔레트
-    palette = ["#5c7dd2","#92b8ff","#aeceff","#c7e4ff",'#c3b7eb', '#9590e6', '#837ed5']
+    palette = ['#A2C5E2']
 
     # 그래프 생성
     fig = px.bar(dfs, 
@@ -64,9 +64,12 @@ def create_chart(dfs, theme):
                     font_family="KoPubWorld돋움체_Pro"
                 ),
                 paper_bgcolor='white',  
-                plot_bgcolor='white',  
-                showlegend=False  
-                )
+                plot_bgcolor='white',
+                margin=dict(t=0, b=10, l=10, r=10),  
+                showlegend=False,
+                xaxis=dict(title='', showticklabels=False),
+                yaxis=dict(title='', showticklabels=True))  
+                
 
     # hover 시 정보 설정
     fig.update_traces(
@@ -76,42 +79,26 @@ def create_chart(dfs, theme):
     return st.plotly_chart(fig)
 
 
+# 지역 chart 생성
+def region_chart(df, year):
+                current_data = df[df['연도'] == year]
+                
+                for index, row in current_data.iterrows():
+                    reion = row['지역']
+                    count = row['총사고수']
+                    change_rate = row['전년대비증감률']
+                    change_color = 'green' if change_rate > 0 else 'grey' if change_rate == 0 else 'red'
+                    change_icon = '↑' if change_rate > 0 else '-' if change_rate == 0 else '↓'
 
-# bar chart 생성 (오른쪽 정렬)
-def create_chart2(dfs, theme):
-    # 색상 팔레트
-    palette = ["#5c7dd2","#92b8ff","#aeceff","#c7e4ff",'#c3b7eb', '#9590e6', '#837ed5']
-
-    # 그래프 생성
-    fig = px.bar(dfs, 
-                 x='건수', 
-                 y=theme, 
-                 color=theme, 
-                 orientation='h',
-                 color_discrete_sequence=palette,  
-                 custom_data=['건수', '퍼센트(%)'])
-
-    # 레이아웃 설정
-    fig.update_layout(
-                font=dict({'family':'KoPubWorld돋움체_Pro',
-                        'color':'black'}), 
-                hoverlabel=dict(       
-                    font_size=15,
-                    font_family="KoPubWorld돋움체_Pro"
-                ),
-                paper_bgcolor='white',  
-                plot_bgcolor='white', 
-                xaxis=dict(autorange='reversed'), 
-                showlegend=False  
-                )
-
-    # hover 시 정보 설정
-    fig.update_traces(
-        hovertemplate='<b><br>%{y}</b></br>%{customdata[0]}건</br>%{customdata[1]}%<br><extra></extra>'
-    )
-
-    return st.plotly_chart(fig)
-
+                    st.markdown(f"""
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 150px;">
+                        <p style="margin: 0; padding: 0; font-size: 15px; font-weight: bold; width: 50px; text-align: left;">{reion}</p>
+                        <p style="margin: 0; padding: 0; font-size: 15px; width: 50px; text-align: center;">{count}</p>
+                        <p style="margin: 0; padding: 0; color: {change_color}; font-size: 8px; width: 50px; text-align: right;">{change_icon} {abs(change_rate):.2f}%</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+    
+    
 
 
 # 지역 표기 형식 변경 함수
