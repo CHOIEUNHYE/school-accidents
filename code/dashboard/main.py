@@ -42,6 +42,8 @@ school_level = st.Page("school_level.py", title="학교급별 분석", icon=":ma
 school_region = st.Page(
     "school_region.py", title="지역별 분석", icon=":material/location_on:")
 
+school_add = st.Page(
+    "school_add.py", title="추가 분석", icon=":material/location_on:")
 
 # sidebar 설정
 pg = st.navigation(
