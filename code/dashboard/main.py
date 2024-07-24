@@ -49,7 +49,7 @@ school_add = st.Page(
 pg = st.navigation(
     {   
 
-        "🏫학교안전사고 분석 대시보드": [school_home,school_region,school_level,accident_details]
+        "🏫학교안전사고 분석 대시보드": [school_home,school_region,school_level,accident_details,school_add]
     }
 )
 
