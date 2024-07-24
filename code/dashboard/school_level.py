@@ -248,227 +248,227 @@ with col[0]:
     with tab5:
         render_tab('2023')
 
-    # sch_month_acci 데이터프레임
-    sch_month_acci = sch_df.copy()
-    # 초등학교 저학년/고학년 구분
-    sch_month_acci.loc[(sch_month_acci['학교급']=='초등학교')&(sch_month_acci['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-    sch_month_acci.loc[(sch_month_acci['학교급']=='초등학교')&(sch_month_acci['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
-    # 각 사고월별 총 사고 건수 계산
-    sch_month_tot_acci = sch_month_acci.groupby('사고월')['구분'].count()
-    # 각 행에 대해 퍼센트를 계산하여 새로운 컬럼 추가
-    month_level = sch_month_acci.groupby(['학교급','사고월']).count()[['구분']].reset_index()
-    month_level['퍼센트'] = month_level.apply(lambda row:round((row['구분'] / sch_month_tot_acci[row['사고월']]) * 100, 2), axis=1)
-    months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-    month_level_pivot = month_level.pivot_table(index='사고월', columns='학교급', values=['퍼센트','구분']).reindex(index=months)
-    sch_type_cat = ["유치원", "초등학교(저학년)", "초등학교(고학년)", "중학교", "고등학교", "특수학교", "기타학교"]
-    colors = ['#5c7dd2','#92b8ff','#aeceff','#c7e4ff','#c3b7eb', '#9590e6', '#837ed5', '#5843a9']
+# sch_month_acci 데이터프레임
+sch_month_acci = sch_df.copy()
+# 초등학교 저학년/고학년 구분
+sch_month_acci.loc[(sch_month_acci['학교급']=='초등학교')&(sch_month_acci['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
+sch_month_acci.loc[(sch_month_acci['학교급']=='초등학교')&(sch_month_acci['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+# 각 사고월별 총 사고 건수 계산
+sch_month_tot_acci = sch_month_acci.groupby('사고월')['구분'].count()
+# 각 행에 대해 퍼센트를 계산하여 새로운 컬럼 추가
+month_level = sch_month_acci.groupby(['학교급','사고월']).count()[['구분']].reset_index()
+month_level['퍼센트'] = month_level.apply(lambda row:round((row['구분'] / sch_month_tot_acci[row['사고월']]) * 100, 2), axis=1)
+months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+month_level_pivot = month_level.pivot_table(index='사고월', columns='학교급', values=['퍼센트','구분']).reindex(index=months)
+sch_type_cat = ["유치원", "초등학교(저학년)", "초등학교(고학년)", "중학교", "고등학교", "특수학교", "기타학교"]
+colors = ['#5c7dd2','#92b8ff','#aeceff','#c7e4ff','#c3b7eb', '#9590e6', '#837ed5', '#5843a9']
+
+col = st.columns((0.5, 5, 0.5), gap='medium')
+with col[1]:
+    # sch_month_acci 그래프 시각화
+    st.markdown('######')
+    st.markdown(f'''
+                <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0; text-align: center;">
+                학교급별 사고 수 월별 5개년 누적 비교
+                </h4>
+                ''', unsafe_allow_html=True)
+    st.plotly_chart(create_stacked_barchart(month_level_pivot, sch_type_cat, colors, months))
+
+    st.divider()
 
     col = st.columns((0.5, 5, 0.5), gap='medium')
-    with col[1]:
-        # sch_month_acci 그래프 시각화
-        st.markdown('######')
-        st.markdown(f'''
-                    <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0; text-align: center;">
-                    학교급별 사고 수 월별 5개년 누적 비교
-                    </h4>
-                    ''', unsafe_allow_html=True)
-        st.plotly_chart(create_stacked_barchart(month_level_pivot, sch_type_cat, colors, months))
+with col[1]:
+    st.markdown('######')
+    st.markdown(f'''
+                <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0; text-align: center;">
+                학교급별 사고 내용 5개년 누적 분석
+                </h4>
+                ''', unsafe_allow_html=True)
+st.markdown('###')
 
-        st.divider()
+# 탭 정의
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["사고 시간", "사고 장소", "사고 부위", "사고 형태", "사고 당시 활동", "사고 매개물"])
+    
+# 학교급 정렬 기준 지정
+custom_order = ["유치원", "초등학교(저학년)", "초등학교(고학년)", "중학교", "고등학교", "특수학교"]
 
-        col = st.columns((0.5, 5, 0.5), gap='medium')
-    with col[1]:
-        st.markdown('######')
-        st.markdown(f'''
-                    <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0; text-align: center;">
-                    학교급별 사고 내용 5개년 누적 분석
-                    </h4>
-                    ''', unsafe_allow_html=True)
-    st.markdown('###')
+# sch_acci_time 데이터프레임(사고시간 5개년 누적)
+# '학교급'의 '기타학교' 값 제외
+sch_acci_time = sch_df[sch_df['학교급'] != '기타학교']
+# 초등학교 저학년/고학년 구분
+sch_acci_time.loc[(sch_acci_time['학교급']=='초등학교')&(sch_acci_time['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
+sch_acci_time.loc[(sch_acci_time['학교급']=='초등학교')&(sch_acci_time['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+# 분석 편의를 위해 일부 데이터 값 변경
+sch_acci_time = sch_acci_time.replace('점심시간', '식사시간')
+sch_acci_time = sch_acci_time.replace('석식시간', '식사시간')
+sch_acci_time = sch_acci_time.replace('휴식시간 및 청소시간', '휴식/청소시간')
+# 연도, 학교급, 사고시간별 사고수 계산
+sch_acci_time = sch_acci_time.groupby(['학교급', '사고시간']).size().reset_index(name='사고수')
+# 학교급 기준으로 정렬
+sch_acci_time['학교급'] = pd.Categorical(sch_acci_time['학교급'], categories=custom_order, ordered=True)
+sch_acci_time = sch_acci_time.sort_values(['학교급', '사고수'], ascending=[True, False]).reset_index(drop=True)
+# 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
+sch_acci_time = sch_acci_time.dropna()
 
-    # 탭 정의
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["사고 시간", "사고 장소", "사고 부위", "사고 형태", "사고 당시 활동", "사고 매개물"])
-        
-    # 학교급 정렬 기준 지정
-    custom_order = ["유치원", "초등학교(저학년)", "초등학교(고학년)", "중학교", "고등학교", "특수학교"]
+# sch_acci_place 데이터프레임(사고장소 5개년 누적)
+# '학교급'의 '기타학교' 값 제외
+sch_acci_place = sch_df[sch_df['학교급'] != '기타학교']
+# 초등학교 저학년/고학년 구분
+sch_acci_place.loc[(sch_acci_place['학교급']=='초등학교')&(sch_acci_place['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
+sch_acci_place.loc[(sch_acci_place['학교급']=='초등학교')&(sch_acci_place['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+# 분석 편의를 위해 일부 데이터 값 변경
+sch_acci_place = sch_acci_place.replace('교외활동', '교외')
+# 연도, 학교급, 사고장소별 사고수 계산
+sch_acci_place = sch_acci_place.groupby(['학교급', '사고장소']).size().reset_index(name='사고수')
+# 학교급 기준으로 정렬
+sch_acci_place['학교급'] = pd.Categorical(sch_acci_place['학교급'], categories=custom_order, ordered=True)
+sch_acci_place = sch_acci_place.sort_values(['학교급', '사고수'], ascending=[True, False]).reset_index(drop=True)
+# 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
+sch_acci_place = sch_acci_place.dropna()
 
-    # sch_acci_time 데이터프레임(사고시간 5개년 누적)
-    # '학교급'의 '기타학교' 값 제외
-    sch_acci_time = sch_df[sch_df['학교급'] != '기타학교']
-    # 초등학교 저학년/고학년 구분
-    sch_acci_time.loc[(sch_acci_time['학교급']=='초등학교')&(sch_acci_time['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-    sch_acci_time.loc[(sch_acci_time['학교급']=='초등학교')&(sch_acci_time['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
-    # 분석 편의를 위해 일부 데이터 값 변경
-    sch_acci_time = sch_acci_time.replace('점심시간', '식사시간')
-    sch_acci_time = sch_acci_time.replace('석식시간', '식사시간')
-    sch_acci_time = sch_acci_time.replace('휴식시간 및 청소시간', '휴식/청소시간')
-    # 연도, 학교급, 사고시간별 사고수 계산
-    sch_acci_time = sch_acci_time.groupby(['학교급', '사고시간']).size().reset_index(name='사고수')
-    # 학교급 기준으로 정렬
-    sch_acci_time['학교급'] = pd.Categorical(sch_acci_time['학교급'], categories=custom_order, ordered=True)
-    sch_acci_time = sch_acci_time.sort_values(['학교급', '사고수'], ascending=[True, False]).reset_index(drop=True)
-    # 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
-    sch_acci_time = sch_acci_time.dropna()
+# sch_acci_part 데이터프레임(사고부위 5개년 누적)
+# '학교급'의 '기타학교' 값 제외
+sch_acci_part = sch_df[sch_df['학교급'] != '기타학교']
+# 초등학교 저학년/고학년 구분
+sch_acci_part.loc[(sch_acci_part['학교급']=='초등학교') & (sch_acci_part['사고자학년'].isin(['1학년','2학년','3학년'])), '학교급'] = '초등학교(저학년)'
+sch_acci_part.loc[(sch_acci_part['학교급']=='초등학교') & (sch_acci_part['사고자학년'].isin(['4학년','5학년','6학년'])), '학교급'] = '초등학교(고학년)'
+# 분석 편의를 위해 일부 데이터 값 변경
+sch_acci_part['사고부위'] = sch_acci_part['사고부위'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
+# 연도, 학교급, 사고부위별 사고수 계산
+sch_acci_part = sch_acci_part.groupby(['학교급', '사고부위']).size().reset_index(name='사고수')
+# 학교급 기준으로 정렬
+sch_acci_part['학교급'] = pd.Categorical(sch_acci_part['학교급'], categories=custom_order, ordered=True)
+sch_acci_part = sch_acci_part.sort_values(['학교급', '사고수'], ascending=[True, False]).reset_index(drop=True)
+# 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
+sch_acci_part = sch_acci_part.dropna()
 
-    # sch_acci_place 데이터프레임(사고장소 5개년 누적)
-    # '학교급'의 '기타학교' 값 제외
-    sch_acci_place = sch_df[sch_df['학교급'] != '기타학교']
-    # 초등학교 저학년/고학년 구분
-    sch_acci_place.loc[(sch_acci_place['학교급']=='초등학교')&(sch_acci_place['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-    sch_acci_place.loc[(sch_acci_place['학교급']=='초등학교')&(sch_acci_place['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
-    # 분석 편의를 위해 일부 데이터 값 변경
-    sch_acci_place = sch_acci_place.replace('교외활동', '교외')
-    # 연도, 학교급, 사고장소별 사고수 계산
-    sch_acci_place = sch_acci_place.groupby(['학교급', '사고장소']).size().reset_index(name='사고수')
-    # 학교급 기준으로 정렬
-    sch_acci_place['학교급'] = pd.Categorical(sch_acci_place['학교급'], categories=custom_order, ordered=True)
-    sch_acci_place = sch_acci_place.sort_values(['학교급', '사고수'], ascending=[True, False]).reset_index(drop=True)
-    # 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
-    sch_acci_place = sch_acci_place.dropna()
+# sch_acci_type 데이터프레임(사고형태 5개년 누적)
+# '학교급'의 '기타학교' 값 제외
+sch_acci_type = sch_df[sch_df['학교급'] != '기타학교']
+# 초등학교 저학년/고학년 구분
+sch_acci_type.loc[(sch_acci_type['학교급']=='초등학교') & (sch_acci_type['사고자학년'].isin(['1학년','2학년','3학년'])), '학교급'] = '초등학교(저학년)'
+sch_acci_type.loc[(sch_acci_type['학교급']=='초등학교') & (sch_acci_type['사고자학년'].isin(['4학년','5학년','6학년'])), '학교급'] = '초등학교(고학년)'
+# 분석 편의를 위해 일부 데이터 값 변경
+sch_acci_type = sch_acci_type.replace('낙상-미끄러짐', '낙상')
+sch_acci_type = sch_acci_type.replace('낙상-넘어짐', '낙상')
+sch_acci_type = sch_acci_type.replace('낙상-떨어짐', '낙상')
+sch_acci_type = sch_acci_type.replace('염좌·삐임 등 신체 충격', '신체 충격')
+# 연도, 학교급, 사고형태별 사고수 계산
+sch_acci_type = sch_acci_type.groupby(['학교급', '사고형태']).size().reset_index(name='사고수')
+# 학교급 기준으로 정렬
+sch_acci_type['학교급'] = pd.Categorical(sch_acci_type['학교급'], categories=custom_order, ordered=True)
+sch_acci_type = sch_acci_type.sort_values(['학교급', '사고수'], ascending=[True, False]).reset_index(drop=True)
+# 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
+sch_acci_type = sch_acci_type.dropna()
 
-    # sch_acci_part 데이터프레임(사고부위 5개년 누적)
-    # '학교급'의 '기타학교' 값 제외
-    sch_acci_part = sch_df[sch_df['학교급'] != '기타학교']
-    # 초등학교 저학년/고학년 구분
-    sch_acci_part.loc[(sch_acci_part['학교급']=='초등학교') & (sch_acci_part['사고자학년'].isin(['1학년','2학년','3학년'])), '학교급'] = '초등학교(저학년)'
-    sch_acci_part.loc[(sch_acci_part['학교급']=='초등학교') & (sch_acci_part['사고자학년'].isin(['4학년','5학년','6학년'])), '학교급'] = '초등학교(고학년)'
-    # 분석 편의를 위해 일부 데이터 값 변경
-    sch_acci_part['사고부위'] = sch_acci_part['사고부위'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
-    # 연도, 학교급, 사고부위별 사고수 계산
-    sch_acci_part = sch_acci_part.groupby(['학교급', '사고부위']).size().reset_index(name='사고수')
-    # 학교급 기준으로 정렬
-    sch_acci_part['학교급'] = pd.Categorical(sch_acci_part['학교급'], categories=custom_order, ordered=True)
-    sch_acci_part = sch_acci_part.sort_values(['학교급', '사고수'], ascending=[True, False]).reset_index(drop=True)
-    # 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
-    sch_acci_part = sch_acci_part.dropna()
+# sch_acci_act 데이터프레임(사고당시활동 5개년 누적)
+# '학교급'의 '기타학교' 값 제외
+sch_acci_act = sch_df[sch_df['학교급'] != '기타학교']
+# 초등학교 저학년/고학년 구분
+sch_acci_act.loc[(sch_acci_act['학교급']=='초등학교') & (sch_acci_act['사고자학년'].isin(['1학년','2학년','3학년'])), '학교급'] = '초등학교(저학년)'
+sch_acci_act.loc[(sch_acci_act['학교급']=='초등학교') & (sch_acci_act['사고자학년'].isin(['4학년','5학년','6학년'])), '학교급'] = '초등학교(고학년)'
+# 연도, 학교급, 사고당시활동별 사고수 계산
+sch_acci_act = sch_acci_act.groupby(['학교급', '사고당시활동']).size().reset_index(name='사고수')
+# 연도, 학교급 기준으로 정렬
+sch_acci_act['학교급'] = pd.Categorical(sch_acci_act['학교급'], categories=custom_order, ordered=True)
+sch_acci_act = sch_acci_act.sort_values(['학교급', '사고수']).reset_index(drop=True)
+# 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
+sch_acci_act = sch_acci_act.dropna()
 
-    # sch_acci_type 데이터프레임(사고형태 5개년 누적)
-    # '학교급'의 '기타학교' 값 제외
-    sch_acci_type = sch_df[sch_df['학교급'] != '기타학교']
-    # 초등학교 저학년/고학년 구분
-    sch_acci_type.loc[(sch_acci_type['학교급']=='초등학교') & (sch_acci_type['사고자학년'].isin(['1학년','2학년','3학년'])), '학교급'] = '초등학교(저학년)'
-    sch_acci_type.loc[(sch_acci_type['학교급']=='초등학교') & (sch_acci_type['사고자학년'].isin(['4학년','5학년','6학년'])), '학교급'] = '초등학교(고학년)'
-    # 분석 편의를 위해 일부 데이터 값 변경
-    sch_acci_type = sch_acci_type.replace('낙상-미끄러짐', '낙상')
-    sch_acci_type = sch_acci_type.replace('낙상-넘어짐', '낙상')
-    sch_acci_type = sch_acci_type.replace('낙상-떨어짐', '낙상')
-    sch_acci_type = sch_acci_type.replace('염좌·삐임 등 신체 충격', '신체 충격')
-    # 연도, 학교급, 사고형태별 사고수 계산
-    sch_acci_type = sch_acci_type.groupby(['학교급', '사고형태']).size().reset_index(name='사고수')
-    # 학교급 기준으로 정렬
-    sch_acci_type['학교급'] = pd.Categorical(sch_acci_type['학교급'], categories=custom_order, ordered=True)
-    sch_acci_type = sch_acci_type.sort_values(['학교급', '사고수'], ascending=[True, False]).reset_index(drop=True)
-    # 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
-    sch_acci_type = sch_acci_type.dropna()
+# sch_acci_mdm 데이터프레임(사고매개물 5개년 누적)
+# '학교급'의 '기타학교' 값 제외
+sch_acci_mdm = sch_df[sch_df['학교급'] != '기타학교']
+# 초등학교 저학년/고학년 구분
+sch_acci_mdm.loc[(sch_acci_mdm['학교급']=='초등학교') & (sch_acci_mdm['사고자학년'].isin(['1학년','2학년','3학년'])), '학교급'] = '초등학교(저학년)'
+sch_acci_mdm.loc[(sch_acci_mdm['학교급']=='초등학교') & (sch_acci_mdm['사고자학년'].isin(['4학년','5학년','6학년'])), '학교급'] = '초등학교(고학년)'
+# 분석 편의를 위해 일부 데이터 값 변경
+sch_acci_mdm['사고매개물'] = sch_acci_mdm['사고매개물'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
+# 연도, 학교급, 사고매개물별 사고수 계산
+sch_acci_mdm = sch_acci_mdm.groupby(['학교급', '사고매개물']).size().reset_index(name='사고수')
+# 연도, 학교급 기준으로 정렬
+sch_acci_mdm['학교급'] = pd.Categorical(sch_acci_mdm['학교급'], categories=custom_order, ordered=True)
+sch_acci_mdm = sch_acci_mdm.sort_values(['학교급', '사고수']).reset_index(drop=True)
+# 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
+sch_acci_mdm = sch_acci_mdm.dropna()
 
-    # sch_acci_act 데이터프레임(사고당시활동 5개년 누적)
-    # '학교급'의 '기타학교' 값 제외
-    sch_acci_act = sch_df[sch_df['학교급'] != '기타학교']
-    # 초등학교 저학년/고학년 구분
-    sch_acci_act.loc[(sch_acci_act['학교급']=='초등학교') & (sch_acci_act['사고자학년'].isin(['1학년','2학년','3학년'])), '학교급'] = '초등학교(저학년)'
-    sch_acci_act.loc[(sch_acci_act['학교급']=='초등학교') & (sch_acci_act['사고자학년'].isin(['4학년','5학년','6학년'])), '학교급'] = '초등학교(고학년)'
-    # 연도, 학교급, 사고당시활동별 사고수 계산
-    sch_acci_act = sch_acci_act.groupby(['학교급', '사고당시활동']).size().reset_index(name='사고수')
-    # 연도, 학교급 기준으로 정렬
-    sch_acci_act['학교급'] = pd.Categorical(sch_acci_act['학교급'], categories=custom_order, ordered=True)
-    sch_acci_act = sch_acci_act.sort_values(['학교급', '사고수']).reset_index(drop=True)
-    # 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
-    sch_acci_act = sch_acci_act.dropna()
+# 그래프 색 지정
+colors = {
+    "유치원": '#5c7dd2', 
+    "초등학교(저학년)": '#92b8ff', 
+    "초등학교(고학년)": '#aeceff', 
+    "중학교": '#c7e4ff', 
+    "고등학교": '#c3b7eb', 
+    "특수학교": '#9590e6'
+    }
 
-    # sch_acci_mdm 데이터프레임(사고매개물 5개년 누적)
-    # '학교급'의 '기타학교' 값 제외
-    sch_acci_mdm = sch_df[sch_df['학교급'] != '기타학교']
-    # 초등학교 저학년/고학년 구분
-    sch_acci_mdm.loc[(sch_acci_mdm['학교급']=='초등학교') & (sch_acci_mdm['사고자학년'].isin(['1학년','2학년','3학년'])), '학교급'] = '초등학교(저학년)'
-    sch_acci_mdm.loc[(sch_acci_mdm['학교급']=='초등학교') & (sch_acci_mdm['사고자학년'].isin(['4학년','5학년','6학년'])), '학교급'] = '초등학교(고학년)'
-    # 분석 편의를 위해 일부 데이터 값 변경
-    sch_acci_mdm['사고매개물'] = sch_acci_mdm['사고매개물'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
-    # 연도, 학교급, 사고매개물별 사고수 계산
-    sch_acci_mdm = sch_acci_mdm.groupby(['학교급', '사고매개물']).size().reset_index(name='사고수')
-    # 연도, 학교급 기준으로 정렬
-    sch_acci_mdm['학교급'] = pd.Categorical(sch_acci_mdm['학교급'], categories=custom_order, ordered=True)
-    sch_acci_mdm = sch_acci_mdm.sort_values(['학교급', '사고수']).reset_index(drop=True)
-    # 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
-    sch_acci_mdm = sch_acci_mdm.dropna()
+# 사고 시간 탭
+with tab1:
+    st.markdown('######')
+    st.markdown(f'''
+        <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
+        학교급별 사고 시간
+        </h4>
+        ''', unsafe_allow_html=True)
+    
+    # sch_acci_time 그래프 시각화
+    st.plotly_chart(create_sub_barchart(sch_acci_time, '사고시간', '사고수', colors))
 
-    # 그래프 색 지정
-    colors = {
-        "유치원": '#5c7dd2', 
-        "초등학교(저학년)": '#92b8ff', 
-        "초등학교(고학년)": '#aeceff', 
-        "중학교": '#c7e4ff', 
-        "고등학교": '#c3b7eb', 
-        "특수학교": '#9590e6'
-        }
+# 사고 장소 탭
+with tab2:
+    st.markdown('######')
+    st.markdown(f'''
+        <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
+        학교급별 사고 장소
+        </h4>
+        ''', unsafe_allow_html=True)
+    
+    # sch_acci_place 그래프 시각화
+    st.plotly_chart(create_sub_barchart(sch_acci_place, '사고장소', '사고수', colors))
 
-    # 사고 시간 탭
-    with tab1:
-        st.markdown('######')
-        st.markdown(f'''
-            <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
-            학교급별 사고 시간
-            </h4>
-            ''', unsafe_allow_html=True)
-        
-        # sch_acci_time 그래프 시각화
-        st.plotly_chart(create_sub_barchart(sch_acci_time, '사고시간', '사고수', colors))
+# 사고 부위 탭
+with tab3:
+    st.markdown('######')
+    st.markdown(f'''
+        <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
+        학교급별 사고 부위
+        </h4>
+        ''', unsafe_allow_html=True)
+    
+    # sch_acci_part 그래프 시각화
+    st.plotly_chart(create_sub_barchart(sch_acci_part, '사고부위', '사고수', colors))
 
-    # 사고 장소 탭
-    with tab2:
-        st.markdown('######')
-        st.markdown(f'''
-            <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
-            학교급별 사고 장소
-            </h4>
-            ''', unsafe_allow_html=True)
-        
-        # sch_acci_place 그래프 시각화
-        st.plotly_chart(create_sub_barchart(sch_acci_place, '사고장소', '사고수', colors))
+# 사고 형태 탭
+with tab4:
+    st.markdown('######')
+    st.markdown(f'''
+        <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
+        학교급별 사고 형태
+        </h4>
+        ''', unsafe_allow_html=True)
+    
+    # sch_acci_type 그래프 시각화
+    st.plotly_chart(create_sub_barchart(sch_acci_type, '사고형태', '사고수', colors))
 
-    # 사고 부위 탭
-    with tab3:
-        st.markdown('######')
-        st.markdown(f'''
-            <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
-            학교급별 사고 부위
-            </h4>
-            ''', unsafe_allow_html=True)
-        
-        # sch_acci_part 그래프 시각화
-        st.plotly_chart(create_sub_barchart(sch_acci_part, '사고부위', '사고수', colors))
+# 사고 당시 활동 탭
+with tab5:
+    st.markdown('######')
+    st.markdown(f'''
+        <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
+        학교급별 사고 당시 활동
+        </h4>
+        ''', unsafe_allow_html=True)
+    
+    # sch_acci_act 그래프 시각화
+    st.plotly_chart(create_sub_barchart(sch_acci_act, '사고당시활동', '사고수', colors))
 
-    # 사고 형태 탭
-    with tab4:
-        st.markdown('######')
-        st.markdown(f'''
-            <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
-            학교급별 사고 형태
-            </h4>
-            ''', unsafe_allow_html=True)
-        
-        # sch_acci_type 그래프 시각화
-        st.plotly_chart(create_sub_barchart(sch_acci_type, '사고형태', '사고수', colors))
-
-    # 사고 당시 활동 탭
-    with tab5:
-        st.markdown('######')
-        st.markdown(f'''
-            <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
-            학교급별 사고 당시 활동
-            </h4>
-            ''', unsafe_allow_html=True)
-        
-        # sch_acci_act 그래프 시각화
-        st.plotly_chart(create_sub_barchart(sch_acci_act, '사고당시활동', '사고수', colors))
-
-    # 사고 매개물 탭
-    with tab6:
-        st.markdown('######')
-        st.markdown(f'''
-            <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
-            학교급별 사고 매개물
-            </h4>
-            ''', unsafe_allow_html=True)
-        
-        # sch_acci_mdm 그래프 시각화
-        st.plotly_chart(create_sub_barchart(sch_acci_mdm, '사고매개물', '사고수', colors))                
+# 사고 매개물 탭
+with tab6:
+    st.markdown('######')
+    st.markdown(f'''
+        <h4 style="font-family: 'KoPubWorld Dotum', sans-serif; margin: 0; padding: 0;">
+        학교급별 사고 매개물
+        </h4>
+        ''', unsafe_allow_html=True)
+    
+    # sch_acci_mdm 그래프 시각화
+    st.plotly_chart(create_sub_barchart(sch_acci_mdm, '사고매개물', '사고수', colors))                
