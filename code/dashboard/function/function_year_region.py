@@ -1,7 +1,5 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
 import pandas as pd
-import polars as pl
 import plotly.express as px
 import plotly.graph_objects as go
 import geopandas as gpd
@@ -56,11 +54,11 @@ def create_chart(dfs, theme):
 
     # 레이아웃 설정
     fig.update_layout(
-                font=dict({'family':'KoPubWorld돋움체_Pro',
+                font=dict({'family':'KoPubWorld Dotum',
                         'color':'black'}), 
                 hoverlabel=dict(       
                     font_size=15,
-                    font_family="KoPubWorld돋움체_Pro"
+                    font_family="KoPubWorld Dotum"
                 ),
                 paper_bgcolor='white',  
                 plot_bgcolor='white',
@@ -123,11 +121,11 @@ def create_chart_detail(dfs, theme):
 
     # 레이아웃 설정
     fig.update_layout(
-        font=dict({'family':'KoPubWorld돋움체_Pro',
+        font=dict({'family':'KoPubWorld Dotum',
                    'color':'black'}), 
         hoverlabel=dict(
             font_size=15,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
         ),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -147,12 +145,10 @@ def create_chart_detail(dfs, theme):
 
 
 # 지역 chart 생성 - 교육청
-def region_chart_detail(df, year):
-                current_data = df[(df['연도'] == year)]
-                
-                for index, row in current_data.iterrows():
+def region_chart_detail(df):
+                for index, row in df.iterrows():
                     reion = row['교육청']
-                    count = row['총사고수']
+                    count = row['건수']
                     change_rate = row['전년대비증감률']
                     change_color = 'green' if change_rate > 0 else 'grey' if change_rate == 0 else 'red'
                     change_icon = '↑' if change_rate > 0 else '-' if change_rate == 0 else '↓'
@@ -175,16 +171,9 @@ def extract_region(name):
     else:
         return name[:2]
     
-    # 학교별 데이터 전처리 함수 - 시도별
+# 학교별 데이터 전처리 함수 - 시도별
 def schooldf1(inputdf):
     df = inputdf.parse('요약정보', skiprows=8)
     df.rename(columns={'행 레이블': '지역', '합계 : 학생수_총계_계':'학생수'}, inplace=True)
     df = df[df['지역'] != '총합계']
-    return df
-
-# 학교별 데이터 전처리 함수 - 교육청별
-def schooldf2(inputdf):
-    df = inputdf.parse('요약정보', skiprows=8)
-    df.rename(columns={'행 레이블': '교육청', '합계 : 학생수_총계_계':'학생수'}, inplace=True)
-    df = df[df['교육청'] != '총합계']
     return df
