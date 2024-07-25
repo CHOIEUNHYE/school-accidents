@@ -1,13 +1,9 @@
 # 지역별 분석 streamlit 파일
 import streamlit as st
-import altair as alt
-from streamlit_option_menu import option_menu
 import pandas as pd
 import polars as pl
 import plotly.express as px
-import plotly.graph_objects as go
 import geopandas as gpd
-import matplotlib.pyplot as plt
 import json
 from function_year_region import *  # function_year_region.py 파일에서 모든 함수 불러오기 
 
@@ -39,6 +35,12 @@ geojson_loads = json.loads(geojson.to_json()) # geojson 데이터프레임을 js
 def create_map(df, location_column, parameter_column):
     color_scale = ['#F7FBFC', '#769FCD']
 
+    df['is_integer'] = df[parameter_column].apply(lambda x: float(x).is_integer())
+    df['formatted_value'] = df.apply(
+        lambda row: f"{row[parameter_column]:.3f}" if not row['is_integer'] else f"{int(row[parameter_column]):,}",
+        axis=1
+    )
+
     fig = px.choropleth_mapbox(
         df,
         geojson=geojson,
@@ -50,7 +52,8 @@ def create_map(df, location_column, parameter_column):
         zoom=5.5,
         center={"lat": 36.5, "lon": 127.5},
         opacity=0.5,
-        labels={parameter_column: parameter_column}
+        labels={parameter_column: parameter_column},
+        hover_data={location_column: True, 'formatted_value': True}  # 호버 데이터 추가
     )
 
     fig.update_layout(
@@ -59,6 +62,10 @@ def create_map(df, location_column, parameter_column):
         hoverlabel=dict(font_size=15, font_family="KoPubWorld돋움체 Medium"),
         yaxis=dict(tickformat=','),
         showlegend=False 
+    )
+
+    fig.update_traces(
+        hovertemplate="<b>%{customdata[0]}</b><br>%{customdata[1]}건<extra></extra>"
     )
 
     return st.plotly_chart(fig)

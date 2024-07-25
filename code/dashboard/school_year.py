@@ -1,14 +1,9 @@
 # 연도별 분석 streamlit 파일
 import streamlit as st
-import altair as alt
 from streamlit_option_menu import option_menu
 import pandas as pd
 import polars as pl
 import plotly.express as px
-import plotly.graph_objects as go
-import geopandas as gpd
-import matplotlib.pyplot as plt
-import json
 from function_year_region import *  # function_year_region.py 파일에서 모든 함수 불러오기 
 
 
