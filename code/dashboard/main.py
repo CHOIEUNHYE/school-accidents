@@ -9,7 +9,7 @@ import altair as alt
 import pandas as pd
 import polars as pl
 import plotly.express as px
-
+import os 
 
 
 #######################
@@ -23,8 +23,9 @@ st.set_page_config(
 
 with open( "component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
-
-
+    
+os.write(1,b'Something was executed.\n')
+os.write(os.getcwd())
 #########################
 # sidebar 멀티 페이지 설정
 
