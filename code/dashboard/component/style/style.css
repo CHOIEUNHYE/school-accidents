@@ -2,6 +2,10 @@ html, body, iframe, h1, h2, h3, h4, p, b, a [class*="css"] {
     font-family: 'KoPubWorld Dotum', sans-serif;
 }
 
+.st-emotion-cache-oq308l{
+    font-size:20px
+}
+
 table {
     table-layout: fixed;
     border-collapse: collapse;
