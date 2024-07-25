@@ -21,7 +21,7 @@ st.set_page_config(
     initial_sidebar_state="expanded")
 
 
-with open( "/mount/src/school-accidents/code/dashboard/component/style/KoPubWorld Dotum.css" ) as css:
+with open( "component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
 
 
