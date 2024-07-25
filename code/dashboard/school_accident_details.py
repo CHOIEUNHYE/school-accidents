@@ -34,7 +34,7 @@ df_2023 = df[df['사고발생일'].between('2023-01-01', '2023-12-31')]
 
 st.markdown('''
 <h1 style="font-family: 'KoPubWorld Dotum', sans-serif; text-align: center;">
-    세부 내용 분석
+    학교안전사고 세부 내용 분석
 </h1>
 ''', unsafe_allow_html=True)
 
