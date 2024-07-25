@@ -21,6 +21,11 @@ st.set_page_config(
     initial_sidebar_state="expanded")
 
 os.write(1,b'Something was executed.\n')
+# 현재 작업 디렉토리 파악
+current_directory = os.getcwd()
+
+# Streamlit 앱에서 현재 디렉토리 출력
+st.write(f"현재 작업 디렉토리: {current_directory}")
 
 with open( "component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
