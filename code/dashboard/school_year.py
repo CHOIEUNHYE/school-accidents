@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import geopandas as gpd
 import matplotlib.pyplot as plt
 import json
+import os
 from function_year_region import *  # function_year_region.py 파일에서 모든 함수 불러오기 
 
 
