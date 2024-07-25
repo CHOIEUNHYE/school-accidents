@@ -78,8 +78,8 @@ with col[0] :
         color_discrete_map=color_discrete_map)
             
         fig.update_layout(
-            font=dict(family='KoPubWorld돋움체 Medium', color='black'),
-            hoverlabel=dict(font_size=15, font_family="KoPubWorld돋움체 Medium"),
+            font=dict(family='KoPubWorld Dotum', color='black'),
+            hoverlabel=dict(font_size=15, font_family="KoPubWorld Dotum"),
             paper_bgcolor='white', plot_bgcolor='white', yaxis=dict(tickformat=','))
             
         fig.update_traces(
@@ -101,8 +101,8 @@ with col[0] :
         fig = px.bar(yearly_counts, x=yearly_counts.index, y=yearly_counts.values,
                  labels={'x': '월', 'y': '사고 건수'}, color_discrete_sequence=[color])
         fig.update_layout(
-            font=dict({'family':'KoPubWorld돋움체_Pro','color':'black'}),
-            hoverlabel=dict(font_size=15, font_family="KoPubWorld돋움체_Pro"),
+            font=dict({'family':'KoPubWorld Dotum','color':'black'}),
+            hoverlabel=dict(font_size=15, font_family="KoPubWorld Dotum"),
             paper_bgcolor='white',
             plot_bgcolor='white', 
             yaxis=dict(tickformat=',', title='사고 건수'))

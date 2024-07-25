@@ -58,8 +58,8 @@ def create_map(df, location_column, parameter_column):
 
     fig.update_layout(
         margin={"r":0,"t":0,"l":0,"b":0},
-        font=dict({'family':'KoPubWorld돋움체 Medium','color':'black'}), 
-        hoverlabel=dict(font_size=15, font_family="KoPubWorld돋움체 Medium"),
+        font=dict({'family':'KoPubWorld Dotum','color':'black'}), 
+        hoverlabel=dict(font_size=15, font_family="KoPubWorld Dotum"),
         yaxis=dict(tickformat=','),
         showlegend=False 
     )
@@ -76,14 +76,6 @@ school2020 = pd.ExcelFile('../../data/학교,학과별 데이터셋_전처리/20
 school2021 = pd.ExcelFile('../../data/학교,학과별 데이터셋_전처리/2021년_상반기_시도별.xlsx')
 school2022 = pd.ExcelFile('../../data/학교,학과별 데이터셋_전처리/2022년_상반기_시도별.xlsx')
 school2023 = pd.ExcelFile('../../data/학교,학과별 데이터셋_전처리/2023년_상반기_시도별.xlsx')
-
-# 학교별 데이터 연도별 데이터 프레임 생성 - 시도별
-school2019_df = schooldf1(school2019)
-school2020_df = schooldf1(school2020)
-school2021_df = schooldf1(school2021)
-school2022_df = schooldf1(school2022)
-school2023_df = schooldf1(school2023)
-
 
 # 데이터 전처리
 df_2019 = df[df['사고발생일'].between('2019-01-01', '2019-12-31')]
@@ -177,6 +169,67 @@ with tab1:
         create_map(CTPRVN_count_geo, '지역', '건수')  
 
 
+    st.markdown('####')
+    st.divider()
+    st.markdown('#### 지역별 세부 현황 분석')
+    st.markdown('######')
+
+    # 세부 분석 연도별 탭 구성
+    def display_region_detail(yeardf, selected_region):
+        # 처리할 지역 목록
+        regions = yeardf['지역'].unique()
+        region_results = {}
+        for region in regions:
+            region_df = yeardf[yeardf['지역'] == region].copy()
+            region_df['교육청'] = region_df['교육청'].replace({'대구교육청': '대구광역시교육청', '울산교육청': '울산광역시교육청', '세종특별자치시교육청': '세종시교육청', '제주특별자치도교육청': '제주도'})
+            region_df['교육청'] = region_df['교육청'].replace({'속초양양교육청': '속초양양교육지원청'})
+            processed_data = count_to(region_df['교육청'])
+            processed_data['교육청'] = processed_data['교육청'].str.replace('교육지원청', '', regex=False)
+            processed_data.loc[processed_data['교육청'].str.contains('서울|부산|대구|인천|광주|대전|울산'), '교육청'] = '시교육청'
+            processed_data.loc[processed_data['교육청'].str.contains('경기|강원|충청|전라|경상'), '교육청'] = '도교육청'
+            region_results[region] = processed_data
+        
+        col = st.columns((3, 2), gap='medium')
+        with col[0]:
+                create_chart(region_results[selected_region], '교육청')
+        with col[1]:
+            for index, row in region_results[selected_region].iterrows():
+                office = row['교육청']
+                count = row['건수']
+                rate = row['퍼센트(%)']
+                
+                st.markdown(f"""
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 300px;">
+                        <p style="margin: 0; padding: 0; font-size: 15px; font-weight: bold; width: 150px; text-align: left;">{office}</p>
+                        <p style="margin: 0; padding: 0; font-size: 15px; width: 50px; text-align: center;">{count}</p>
+                        <p style="margin: 0; padding: 0; font-size: 8px; width: 50px; text-align: right; color: 'grey';"> {rate:.2f}%</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+    def display_region_tab(region):
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["2019년", "2020년", "2021년", "2022년","2023년"])
+        with tab1:
+            display_region_detail(df_2019, region)
+        with tab2: 
+            display_region_detail(df_2020, region)
+        with tab3: 
+            display_region_detail(df_2021, region)
+        with tab4: 
+            display_region_detail(df_2022, region)
+        with tab5: 
+            display_region_detail(df_2023, region)
+    
+
+
+    tab_titles = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
+    tabs = st.tabs(tab_titles)
+        
+    for tab, title in zip(tabs, tab_titles):
+        with tab:
+            display_region_tab(title)
+            
+
+
 # 연도별 탭 구성
 def display_year_tab(year, yeardf, mapdf):
     col = st.columns((2, 1, 3), gap='medium')
@@ -192,35 +245,6 @@ def display_year_tab(year, yeardf, mapdf):
     with col[2]:
         st.markdown(f'#### {year}년 지역별 학생 수 대비 사고 건수')
         create_map(mapdf, '지역', '사고건수/학생수')
-        
-    st.markdown('####')
-    st.markdown('#### 지역별 세부 현황 분석')
-
-    tab_titles = ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주']
-    tabs = st.tabs(tab_titles)
-        
-    # 처리할 지역 목록
-    regions = yeardf['지역'].unique()
-    region_results = {}
-    for region in regions:
-        region_df = yeardf[yeardf['지역'] == region]
-        processed_data = count_to(region_df['교육청'])
-        processed_data['교육청'] = processed_data['교육청'].str.replace('교육지원청', '', regex=False)
-        region_results[region] = processed_data
-
-    for tab, title in zip(tabs, tab_titles):
-        with tab:
-            col = st.columns((3, 2), gap='medium')
-            with col[0]:
-                create_chart(region_results[title], '교육청')
-            with col[1]:
-                region_detail_count = df[df['지역'] == title].groupby(['연도', '교육청']).agg(총사고수=('사고발생일', 'count')).reset_index()
-                region_detail_count['교육청'] = pd.Categorical(region_detail_count['교육청'])
-                region_detail_count['교육청'] = region_detail_count['교육청'].str.replace('교육지원청', '', regex=False)
-                region_detail_count = region_detail_count.sort_values(['연도', '교육청']).reset_index(drop=True)
-                region_detail_count['전년대비증감률'] = region_detail_count.groupby('교육청')['총사고수'].pct_change().fillna(0) * 100
-                region_chart_detail(region_detail_count, year)
-
 
     
 with tab2:
