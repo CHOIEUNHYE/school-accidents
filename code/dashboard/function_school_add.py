@@ -54,10 +54,6 @@ def create_h_barchart(df, x_col, y_col, y_order):
 
     return fig
 
-# 데이터 샘플링 함수
-def sample_data(df, n=30000):
-    return df.sample(n=min(len(df), n))
-
 # 나이와 사고 수 간의 관계 분석 시각화
 def create_line_chart(df, x_col, y_col):
     corr = df[[x_col, y_col]].corr().iloc[0, 1]
@@ -131,14 +127,15 @@ def plot_heatmap(df, x_col, y_col, value_col, x_order):
             font_size=14,
             font_family="KoPubWorld Dotum"
             ),
-        height=500,
+        height=600,
         width=800,
         margin=dict(t=50)
         )
     fig.update_traces(
-        hovertemplate=f'<b>x: %{{x}}</b><br><b>y: %{{y}}</b><br>값: %{{z}}<extra></extra>'
+        texttemplate= '%{z:,}',
+        hovertemplate=f'<b>x: %{{x}}</b><br><b>y: %{{y}}</b><br>값: %{{z:,}}<extra></extra>'
         )
-    fig.update_xaxes(title='')
+    fig.update_xaxes(title='', tickangle=0)
     fig.update_yaxes(title='')
     fig.update_layout(coloraxis_showscale=False)
     
@@ -146,11 +143,13 @@ def plot_heatmap(df, x_col, y_col, value_col, x_order):
 
 # 나이와 사고 내용 간의 관계 분석 시각화
 def plot_boxplot(df, x_col, y_col):
+    sort_xlabels = sorted(df[x_col].unique())
     fig = px.box(
         df,
         x=x_col,
         y=y_col,
-        labels={x_col: x_col, y_col: y_col}
+        labels={x_col: x_col, y_col: y_col},
+        category_orders={x_col: sort_xlabels}
         )
     fig.update_traces(
         marker=dict(color='#4a5fa8'),  
@@ -164,11 +163,11 @@ def plot_boxplot(df, x_col, y_col):
             font_size=14,
             font_family="KoPubWorld Dotum"
             ),
-        height=500,
-        width=1200,
+        height=600,
+        width=1100,
         margin=dict(t=50)
         )
-    fig.update_xaxes(title='')
+    fig.update_xaxes(title='', tickangle=0)
     fig.update_yaxes(title='')
     
     return fig
