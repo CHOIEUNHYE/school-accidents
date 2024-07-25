@@ -29,36 +29,6 @@ df_2021 = df[df['사고발생일'].between('2021-01-01', '2021-12-31')]
 df_2022 = df[df['사고발생일'].between('2022-01-01', '2022-12-31')]
 df_2023 = df[df['사고발생일'].between('2023-01-01', '2023-12-31')]
 
-# 학교급별 분석시 사용될 데이터프레임
-sch_df = df[df['사고자구분'].isin(['일반학생', '특수학교(학급)학생', '체육특기학생'])]
-# 연도 type str로 변경
-sch_df['연도'] = sch_df['연도'].astype(str)
-
-# sch_df에 '나이' 컬럼 추가
-sch_df_addage = sch_df.copy()
-# 접두사 추가 함수 적용
-sch_df_addage['사고자학년_수정'] = sch_df_addage.apply(add_prefix, axis=1)
-# 나이 정의 및 추가
-age_mapping = {
-    '초등_1학년': 8,
-    '초등_2학년': 9,
-    '초등_3학년': 10,
-    '초등_4학년': 11,
-    '초등_5학년': 12,
-    '초등_6학년':13,
-    '중등_1학년': 14,
-    '중등_2학년': 15,
-    '중등_3학년': 16,
-    '고등_1학년': 17,
-    '고등_2학년': 18,
-    '고등_3학년': 19
-    }
-sch_df_addage['나이'] = sch_df_addage['사고자학년_수정'].map(age_mapping)
-# NaN 값을 0으로 대체
-sch_df_addage['나이'] = sch_df_addage['나이'].fillna(0)
-# '나이' 컬럼을 int 타입으로 변환
-sch_df_addage['나이'] = sch_df_addage['나이'].astype(int)
-
 st.markdown('''
 <h1 style="font-family: 'KoPubWorld Dotum', sans-serif; text-align: center;">
     학교안전사고 추가 관계 분석
@@ -76,7 +46,8 @@ st.divider()
 col = st.columns((1, 2.5, 0.5, 2.5, 1), gap='medium')
 
 # sch_totacci 데이터프레임(5개년 누적, 초등학교 저학년/고학년 구분)
-sch_totacci = df[df['학교급'].isin(['기타학교', '특수학교'])]
+# '학교급'의 '특수학교', '기타학교' 값 제외
+sch_totacci = df[~df['학교급'].isin(['특수학교', '기타학교'])]
 # 초등학교 저학년/고학년 구분
 sch_totacci.loc[(sch_totacci['학교급']=='초등학교')&(sch_totacci['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
 sch_totacci.loc[(sch_totacci['학교급']=='초등학교')&(sch_totacci['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'

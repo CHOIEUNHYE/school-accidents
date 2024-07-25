@@ -38,11 +38,12 @@ st.markdown('''
 </h1>
 ''', unsafe_allow_html=True)
 
-
+st.markdown('######')
 st.write('''발생한 학교안전사고의 구체적인 내용에 대한 정보를 제공합니다. 사고와 관련하여 사고가 언제 어디에서 많이 발생했는지, 사고 당시 어떤 활동을 하고 있었는지 등
             구체적인 안전사고의 내용에 대한 교차분석 결과를 확인할 수 있습니다. 그래프에서 구체적인 정보를 확인하고 싶은 항목에 마우스 커서를 올리면 해당 항목에 대한 정보를 확인할 수 있습니다.''')
 
-st.markdown('#####')
+st.markdown('######')
+
 st.markdown('''
 <h2 style="font-family: 'KoPubWorld Dotum', sans-serif;">
     장소별 안전사고 발생 현황

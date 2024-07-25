@@ -135,9 +135,10 @@ st.markdown('''
     </h1>
     ''', unsafe_allow_html=True)
 
+st.markdown('######')
 st.write('''2019년~2023년 5개년간의 지역별 안전사고 발생 현황에 대한 정보를 제공합니다.
          시도별 사고 현황을 연도별로 분석하고, 각 시도별 관할 교육(지원)청에 따라 세부 분석을 진행하였습니다.  각 지역에서의 안전사고 발생 양상을 파악할 수 있습니다.''')
-
+st.markdown('######')
 
 # 레이아웃 나누기
 col = st.columns((4.5, 1.5), gap='medium')
@@ -154,7 +155,8 @@ region_count['전년대비증감률'] = region_count.groupby('지역')['총사�
 
 with tab1:
     st.markdown('#### 지역별 사고 건수 ')
-    st.write('''''')
+    st.write('''2019년~2023년 5개년간 발생한 학교 안전 사고의 수를 시도별로 분석합니다.
+             각 시도에서 발생한 총 사고 건수와 전체 지역에서 차지하는 비율을 수치로 확인할 수 있습니다. 학교안전사고가 많이 발생하는 지역일수록 짙은 색으로 표시됩니다.''')
     col = st.columns((2, 1, 3), gap='medium')
        
     with col[0]: 
@@ -169,7 +171,7 @@ with tab1:
             st.markdown(f"""
             <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 150px;">
                 <p style="margin: 0; padding: 0; font-size: 15px; font-weight: bold; width: 50px; text-align: left;">{region}</p>
-                <p style="margin: 0; padding: 0; font-size: 14px; width: 50px; text-align: center;">{count}</p>
+                <p style="margin: 0; padding: 0; font-size: 14px; width: 50px; text-align: center;">{count:,}</p>
                 <p style="margin: 0; padding: 0; font-size: 8px; width: 50px; text-align: right; color: 'grey';"> {rate:.2f}%</p>
             </div>
             """, unsafe_allow_html=True)
@@ -248,12 +250,13 @@ def display_year_tab(year, yeardf, mapdf):
         st.markdown(f'#### {year}년 지역별 사고 건수 ')
         st.write('''시도별 총 사고 수에 대한 정보를 각 연도마다 제공합니다.
                  특정 연도에 어느 시도에서 사고가 가장 많이 발생했는지, 또는 사고 수가 증가하거나 감소한 추이를 파악할 수 있습니다.''')
+        st.markdown('######')
 
     with col[1]:
         st.markdown(f'#### {year}년 지역별 학생 수 대비 사고 건수')
         st.write('''각 시도에서 발생한 사고 수를 해당 시도의 학생 수와 비교하여 분석하였습니다.
                  각 시도별 학생 수에 비례한 사고 발생률을 파악함으로써 보다 정확한 지역별 사고 발생 상황을 이해할 수 있습니다.''')
-
+        st.markdown('######')
 
     col = st.columns((2, 1, 3), gap='medium')
     with col[0]:
