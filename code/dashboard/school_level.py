@@ -6,6 +6,7 @@ import polars as pl
 import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+import os
 from function_school_level import *  # function_school_level.py 파일에서 모든 함수 불러오기 
 
 # 현재 파일의 디렉토리를 기준으로 경로 설정
