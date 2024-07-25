@@ -1,15 +1,7 @@
 # 대시보드에 사용할 함수를 정의
 
-import pandas as pd
-import numpy as np
-import polars as pl
-from datetime import datetime
-import scipy.stats as stats
-from scipy.stats import chi2_contingency
-from statsmodels.graphics.mosaicplot import mosaic
 import plotly.express as px
 import plotly.graph_objects as go
-import streamlit as st
 
 # 추가 분석 시각화 함수
 
