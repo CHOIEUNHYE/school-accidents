@@ -1,10 +1,8 @@
 # 사고 내용 분석 streamlit 파일
 import streamlit as st
-import altair as alt
-from streamlit_option_menu import option_menu
 import pandas as pd
 import polars as pl
-import plotly.express as px
+import datetime
 from function_acc_detail import *  # function.py 파일에서 모든 함수 불러오기 
 
 
