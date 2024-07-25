@@ -5,3 +5,4 @@ geopandas
 scipy
 streamlit_option_menu
 statsmodels
+pandas
