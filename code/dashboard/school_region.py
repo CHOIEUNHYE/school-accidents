@@ -87,12 +87,6 @@ df_2021 = df[df['사고발생일'].between('2021-01-01', '2021-12-31')]
 df_2022 = df[df['사고발생일'].between('2022-01-01', '2022-12-31')]
 df_2023 = df[df['사고발생일'].between('2023-01-01', '2023-12-31')]
 
-# 학교별 데이터 연도별 데이터 프레임 생성 - 시도별
-school2019_df = schooldf1(school2019)
-school2020_df = schooldf1(school2020)
-school2021_df = schooldf1(school2021)
-school2022_df = schooldf1(school2022)
-school2023_df = schooldf1(school2023)
 
 # 시도별 전체 건수 데이터
 CTPRVN_count = count_to(df['지역'])
