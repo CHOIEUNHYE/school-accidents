@@ -99,6 +99,54 @@ def region_chart(df, year):
                     """, unsafe_allow_html=True)
 
 
+# bar chart 생성 - 교육청
+def create_chart_detail(dfs, theme):
+    # 색상 팔레트
+    palette = ['#A2C5E2']
+    
+    # 막대 두께 설정 (예: 0.4)
+    bar_width = 0.4
+
+    # 데이터 순서를 뒤집기 위해 역순으로 정렬
+    dfs = dfs[::-1]
+
+    # 그래프 생성
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=dfs['건수'],
+        y=dfs[theme],
+        orientation='h',
+        marker_color=palette[0],
+        customdata=dfs[['건수', '퍼센트(%)']],
+        width=bar_width  # 막대 두께 고정
+    ))
+
+    # 레이아웃 설정
+    fig.update_layout(
+        font=dict({'family':'KoPubWorld돋움체_Pro',
+                   'color':'black'}), 
+        hoverlabel=dict(
+            font_size=15,
+            font_family="KoPubWorld돋움체_Pro"
+        ),
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        margin=dict(t=0, b=10, l=10, r=10),
+        showlegend=False,
+        barmode='stack',  # 막대가 너무 뚱뚱하지 않도록 설정
+        xaxis=dict(title='', showticklabels=False),
+        yaxis=dict(title='', showticklabels=True)
+    )
+
+    # hover 시 정보 설정
+    fig.update_traces(
+        hovertemplate='<b><br>%{y}</b></br>%{customdata[0]}건</br>%{customdata[1]}%<br><extra></extra>'
+    )
+
+    return st.plotly_chart(fig)
+
+
 # 지역 chart 생성 - 교육청
 def region_chart_detail(df, year):
                 current_data = df[(df['연도'] == year)]
@@ -118,7 +166,7 @@ def region_chart_detail(df, year):
                     </div>
                     """, unsafe_allow_html=True)
     
-    
+
 
 
 # 지역 표기 형식 변경 함수
