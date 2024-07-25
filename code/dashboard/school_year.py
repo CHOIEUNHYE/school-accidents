@@ -146,7 +146,6 @@ with col[0] :
 
 with col[1]:
     st.markdown('#### 연도별 총 사고 건수 ') 
-    st.markdown('###')
     st.divider()
     
     # 연도별 사고 건수 집계
