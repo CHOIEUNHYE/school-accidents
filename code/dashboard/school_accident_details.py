@@ -216,7 +216,7 @@ with col[0]:
     st.subheader('사고시간 워드클라우드')
     st.write('학교안전사고가 발생한 시간에 대한 정보를 워드클라우드로 제공합니다. 학교안전사고가 많이 발생하는 시간일수록 단어의 크기가 커집니다. 2019년~2023년 5개년 누적으로 사고 수를 집계하였습니다.')
     st.markdown('#####')
-    st.image('component/img/워드클라우드3.png')
+    st.image(current_dir+'/component/img/워드클라우드3.png')
 with col[1]:
     # 카테고리를 수정함, 같은 카테고리로 묶일 수 있는 항목을 묶어줌
     acc_time = time_df.groupby('사고시간').count()[['구분']].reset_index().sort_values('구분')
