@@ -5,7 +5,6 @@
 # pip install streamlit
 # pip install streamlit-option-menu
 import streamlit as st
-import altair as alt
 import pandas as pd
 import polars as pl
 import plotly.express as px
