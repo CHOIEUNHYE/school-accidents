@@ -61,14 +61,14 @@ def horizontal_chart_one_year(df,col):
                 'x': 0.5,
                 'xanchor': 'center',
                 'yanchor': 'top',
-                'font':{'size':24,'family':'KoPubWorld돋움체_Pro'}
+                'font':{'size':24,'family':'KoPubWorld Dotum'}
                 },
-                font=dict({'family':'KoPubWorld돋움체_Pro',
+                font=dict({'family':'KoPubWorld Dotum',
                         'color':'black'}), #전체 폰트 설정(로컬 폰트 사용 가능)
                 hoverlabel=dict(        #호버 박스 폰트 설정
                     # bgcolor="white",
                     font_size=15,
-                    font_family="KoPubWorld돋움체_Pro"
+                    font_family="KoPubWorld Dotum"
                 ),
                 paper_bgcolor='white',  # 전체 배경색
                 plot_bgcolor='white',    # 플롯 배경색
@@ -82,16 +82,16 @@ def horizontal_chart_one_year(df,col):
                 hovertemplate=hover_text)
 
     fig.update_xaxes(title=' ',
-                    title_font_family='KoPubWorld돋움체',
+                    title_font_family='KoPubWorld Dotum',
                     tickfont=dict(size=14),
                     tickformat="~2s",
                     )
 
     fig.update_yaxes(title=' ',
                     tickfont=dict(size=17)
-                    # title_font_family='KoPubWorld돋움체 Medium',
+                    # title_font_family='KoPubWorld Dotum Medium',
                     # tickformat="~2s",
-                    # tickfont=dict({'size':15,'family':'KoPubWorld돋움체 Medium'})
+                    # tickfont=dict({'size':15,'family':'KoPubWorld Dotum Medium'})
                     )
     return fig
 
@@ -124,7 +124,7 @@ def acc_spot_5years_chart(df):
         height=500,
         width=1000,
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             color='black'
         ),
         title={
@@ -132,11 +132,11 @@ def acc_spot_5years_chart(df):
         'x': 0.5,
         'xanchor': 'center',
         'yanchor': 'top',
-        'font':{'size':24,'family':'KoPubWorld돋움체_Pro'}
+        'font':{'size':24,'family':'KoPubWorld Dotum'}
         },
         hoverlabel=dict(
             font_size=15,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
         ),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -177,13 +177,13 @@ def spot_body_fig(df):
 
 
     fig.update_layout(   
-                font=dict({'family':'KoPubWorld돋움체_Pro',
+                font=dict({'family':'KoPubWorld Dotum',
                         'color':'black',
                         'size':20}), #전체 폰트 설정(로컬 폰트 사용 가능)
                 hoverlabel=dict(        #호버 박스 폰트 설정
                     # bgcolor="white",
                     font_size=15,
-                    font_family="KoPubWorld돋움체_Pro"
+                    font_family="KoPubWorld Dotum"
                 ),
                 paper_bgcolor='white',  # 전체 배경색
                 plot_bgcolor='white',    # 플롯 배경색
@@ -195,12 +195,12 @@ def spot_body_fig(df):
                 )
 
     fig.update_yaxes(ticksuffix='  ',
-                    title_font_family='KoPubWorld돋움체 Medium',
+                    title_font_family='KoPubWorld Dotum Medium',
                     tickfont=dict(size=15))    
 
     fig.update_xaxes(
                     title=' ',
-                    title_font_family='KoPubWorld돋움체 Medium',
+                    title_font_family='KoPubWorld Dotum Medium',
                     tickfont=dict(size=12),
                     # tickformat=",",
                     )
@@ -229,13 +229,13 @@ def spot_activity_fig(df):
         
 
     fig.update_layout(   
-                font=dict({'family':'KoPubWorld돋움체_Pro',
+                font=dict({'family':'KoPubWorld Dotum',
                         'color':'black',
                         'size':20}), #전체 폰트 설정(로컬 폰트 사용 가능)
                 hoverlabel=dict(        #호버 박스 폰트 설정
                     # bgcolor="white",
                     font_size=15,
-                    font_family="KoPubWorld돋움체_Pro"
+                    font_family="KoPubWorld Dotum"
                 ),
                 paper_bgcolor='white',  # 전체 배경색
                 plot_bgcolor='white',    # 플롯 배경색
@@ -245,12 +245,12 @@ def spot_activity_fig(df):
                 )
 
     fig.update_yaxes(ticksuffix='  ',
-                    title_font_family='KoPubWorld돋움체 Medium',
+                    title_font_family='KoPubWorld Dotum Medium',
                     tickfont=dict(size=15))    
 
     fig.update_xaxes(
                     title=' ',
-                    title_font_family='KoPubWorld돋움체 Medium',
+                    title_font_family='KoPubWorld Dotum Medium',
                     tickfont=dict(size=12),
                     # tickformat=",",
                     )
@@ -276,14 +276,14 @@ def acc_month_fig(df):
                 # 'x': 0.5,
                 # 'xanchor': 'center',
                 # 'yanchor': 'top',
-                # 'font':{'size':24,'family':'KoPubWorld돋움체_Pro'}
+                # 'font':{'size':24,'family':'KoPubWorld Dotum'}
                 # },
-                font=dict({'family':'KoPubWorld돋움체_Pro',
+                font=dict({'family':'KoPubWorld Dotum',
                         'color':'black'}), #전체 폰트 설정(로컬 폰트 사용 가능)
                 hoverlabel=dict(        #호버 박스 폰트 설정
                     # bgcolor="white",
                     font_size=15,
-                    font_family="KoPubWorld돋움체_Pro"
+                    font_family="KoPubWorld Dotum"
                 ),
                 paper_bgcolor='white',  # 전체 배경색
                 plot_bgcolor='white',    # 플롯 배경색
@@ -292,13 +292,13 @@ def acc_month_fig(df):
 
 
     fig.update_xaxes(title=' ',
-                    title_font_family='KoPubWorld돋움체 Medium',
+                    title_font_family='KoPubWorld Dotum Medium',
                     tickfont=dict(size=17))
 
     fig.update_yaxes(title=' ',
-                    title_font_family='KoPubWorld돋움체 Medium',
+                    title_font_family='KoPubWorld Dotum Medium',
                     tickformat="~2s",
-                    tickfont=dict({'size':15,'family':'KoPubWorld돋움체 Medium'})
+                    tickfont=dict({'size':15,'family':'KoPubWorld Dotum Medium'})
                     )
     return fig
 
@@ -320,20 +320,20 @@ def month_spot_fig(df): # 계절별 사고장소
                 hovertemplate='사고장소 : %{y}'+'<br>사고월 : %{x}'+'<br>사고건수 : %{z:.f}건<extra></extra>')
     fig.update_xaxes(categoryorder='array', categoryarray=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'])
     fig.update_layout(
-                font=dict({'family':'KoPubWorld돋움체_Pro',
+                font=dict({'family':'KoPubWorld Dotum',
                         'color':'black',
                         'size':18}), #전체 폰트 설정(로컬 폰트 사용 가능)
                 hoverlabel=dict(        #호버 박스 폰트 설정
                     # bgcolor="white",
                     font_size=15,
-                    font_family="KoPubWorld돋움체_Pro"
+                    font_family="KoPubWorld Dotum"
                 ),
                 paper_bgcolor='white',  # 전체 배경색
                 plot_bgcolor='white',    # 플롯 배경색
                 yaxis_ticksuffix=" ",
                 yaxis=dict(
                 title=' ',
-                title_font_family='KoPubWorld돋움체 Medium',
+                title_font_family='KoPubWorld Dotum Medium',
                 tickfont=dict(size=15,color='#808495'),
                 ),
                 xaxis=dict(tickfont=dict(color='#808495'))
@@ -371,16 +371,16 @@ def  season_body_fig(df): #계절별 사고부위
         # title={
         # 'text': "<b>계절별 안전사고 부위 (2019~2023)</b><br><br>",
         # 'yanchor': 'top',
-        # 'font':{'size':24,'family':'KoPubWorld돋움체_Pro'}
+        # 'font':{'size':24,'family':'KoPubWorld Dotum'}
         # },
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             color='black',
             size=18
         ),
         hoverlabel=dict(
             font_size=15,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
         ),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -392,7 +392,7 @@ def  season_body_fig(df): #계절별 사고부위
 
     # 서브플롯 각각의 레이아웃 업데이트
     for i, season in enumerate(['봄', '여름', '가을', '겨울']):
-        fig.update_xaxes(title=' ', title_font_family='KoPubWorld돋움체 Medium', tickfont=dict(size=12), row=1, col=i+1)
+        fig.update_xaxes(title=' ', title_font_family='KoPubWorld Dotum Medium', tickfont=dict(size=12), row=1, col=i+1)
         fig.update_yaxes(title=' ', tickfont=dict(size=15), row=1, col=i+1,ticksuffix=" ")
 
     # subplot title 크기 조정
@@ -429,12 +429,12 @@ def season_activity_fig(df): # 계절별 사고당시활동
     # 레이아웃 업데이트
     fig.update_layout(
         font=dict(
-            family='KoPubWorld돋움체_Pro',
+            family='KoPubWorld Dotum',
             color='black',
         ),
         hoverlabel=dict(
             font_size=15,
-            font_family="KoPubWorld돋움체_Pro"
+            font_family="KoPubWorld Dotum"
         ),
         paper_bgcolor='white',
         plot_bgcolor='white',
@@ -453,12 +453,12 @@ def season_activity_fig(df): # 계절별 사고당시활동
 def acc_time_top5_fig(df):
     fig = px.bar(df.tail(5), x="사고건수", y='사고시간',color_discrete_sequence=[palette[0]])
     fig.update_layout(    
-                font=dict({'family':'KoPubWorld돋움체_Pro',
+                font=dict({'family':'KoPubWorld Dotum',
                         'color':'black'}), #전체 폰트 설정(로컬 폰트 사용 가능)
                 hoverlabel=dict(        #호버 박스 폰트 설정
                     # bgcolor="white",
                     font_size=15,
-                    font_family="KoPubWorld돋움체_Pro"
+                    font_family="KoPubWorld Dotum"
                 ),
                 paper_bgcolor='white',  # 전체 배경색
                 plot_bgcolor='white',    # 플롯 배경색
@@ -471,7 +471,7 @@ def acc_time_top5_fig(df):
     fig.update_traces(hovertemplate='사고시간 : %{y}<br>사고건수 : %{x}건<extra></extra>')
 
     fig.update_xaxes(title=' ',
-                    title_font_family='KoPubWorld돋움체 Medium',
+                    title_font_family='KoPubWorld Dotum Medium',
                     tickfont=dict(size=14),
                     tickformat="~2s",
                     )
@@ -497,13 +497,13 @@ def time_tree_map(df):
                     hovertemplate=None  # Hover 템플릿을 비활성화
                     )
     fig.update_layout(   
-                font=dict({'family':'KoPubWorld돋움체_Pro',
+                font=dict({'family':'KoPubWorld Dotum',
                         'color':'black',
                         'size':20}), #전체 폰트 설정(로컬 폰트 사용 가능)
                 # hoverlabel=dict(        #호버 박스 폰트 설정
                 #     # bgcolor="white",
                 #     font_size=15,
-                #     font_family="KoPubWorld돋움체_Pro"
+                #     font_family="KoPubWorld Dotum"
                 # ),
                 paper_bgcolor='white',  # 전체 배경색
                 plot_bgcolor='white',    # 플롯 배경색
