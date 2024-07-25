@@ -4,7 +4,7 @@ import pandas as pd
 import polars as pl
 import datetime
 import os
-from function_acc_detail import *  # function.py 파일에서 모든 함수 불러오기 
+from function.function_acc_detail import *  # function.py 파일에서 모든 함수 불러오기 
 
 # 현재 파일의 디렉토리를 기준으로 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))

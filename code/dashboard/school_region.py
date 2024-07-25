@@ -9,7 +9,7 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 import json
 import os
-from function_year_region import *  # function_year_region.py 파일에서 모든 함수 불러오기 
+from function.function_year_region import *  # function_year_region.py 파일에서 모든 함수 불러오기 
 
 # 현재 파일의 디렉토리를 기준으로 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
