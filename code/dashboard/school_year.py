@@ -1,8 +1,13 @@
 # 연도별 분석 streamlit 파일
 import streamlit as st
+from streamlit_option_menu import option_menu
 import pandas as pd
 import polars as pl
 import plotly.express as px
+import plotly.graph_objects as go
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import json
 import os
 from function.function_year_region import *  # function_year_region.py 파일에서 모든 함수 불러오기 
 
@@ -42,18 +47,15 @@ st.markdown('''
     </h1>
     ''', unsafe_allow_html=True)
 
-st.write('''2019년~2023년 5년간의 학교 안전 사고 데이터를 통해 관련 현황을 분석하고, 유형을 분류하여 학교 안전 사고 예방을 위한 인사이트를 도출합니다.
-         지역, 학교급, 사고 내용을 기준으로 데이터를 분류하여 세부 분석을 진행하였습니다. 각 분석에 대한 내용은 사이드 바의 탭을 통해 확인할 수 있습니다.''')
-
+st.write("2019년~2023년 5년간의 학교 안전 사고 데이터를 통해 관련 현황을 분석하고, 유형을 분류하여 학교 안전 사고 예방을 위한 인사이트를 도출합니다. 지역, 학교급, 사고 내용을 기준으로 데이터를 분류하여 세부 분석을 진행하였습니다. 각 분석에 대한 내용은 사이드 바의 탭을 통해 확인할 수 있습니다.")
+st.write("")
 
 
 # 레이아웃 나누기
 col = st.columns((4.5, 1.5), gap='medium')
 
 with col[0] :
-    st.markdown('#### 연도별 사고 발생 현황 ')
-    st.write('''2019년~ 2023년 5년간의 각 연도마다 발생한 학교 안전사고의 수를 분석합니다.
-             5년간의 흐름을 월별로 집계하여 매년 학교 안전사고가 어느 정도 발생했는지 연도별 추이를 파악할 수 있습니다.''') 
+    st.markdown('#### 연도별 사고 발생 현황 ') 
     # 탭 추가
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(['5개년 통합', '2019년', '2020년', '2021년', '2022년', '2023년'])
         

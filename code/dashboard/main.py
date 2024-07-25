@@ -23,6 +23,8 @@ st.set_page_config(
 # 현재 파일의 디렉토리를 기준으로 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
+st.write(current_dir)
+
 with open( current_dir+"/component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
     
