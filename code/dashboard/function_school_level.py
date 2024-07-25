@@ -1,12 +1,6 @@
 # 대시보드에 사용할 함수를 정의
 
-import pandas as pd
-import numpy as np
-import polars as pl
-from datetime import datetime
 import plotly.express as px
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import streamlit as st

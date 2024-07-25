@@ -1,15 +1,7 @@
 # 추가 분석 streamlit 파일
 import streamlit as st
-import altair as alt
-from streamlit_option_menu import option_menu
 import pandas as pd
 import polars as pl
-import scipy.stats as stats
-from scipy.stats import chi2_contingency
-from statsmodels.graphics.mosaicplot import mosaic
-import plotly.express as px
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
 from function_school_add import *  # function_school_add.py 파일에서 모든 함수 불러오기 
 
 # 폰트 설정
@@ -22,7 +14,7 @@ with open( "component\style\style.css" ) as css:
 #######################
 #데이터 불러오기
 
-df = pl.read_csv('../../../school-accidents/code/dashboard/dashboard_data/학교안전사고데이터통합/학교안전사고데이터_5개년통합_월계절추가.csv')
+df = pl.read_csv('../../../school-accidents/code/dashboard/component/data/학교안전사고데이터통합/학교안전사고데이터_5개년통합_월계절추가.csv')
 df = df.to_pandas()
 df['사고발생일'] = pd.to_datetime(df['사고발생일'])
 df['연도'] = df['사고발생일'].map(lambda x : x.year)
