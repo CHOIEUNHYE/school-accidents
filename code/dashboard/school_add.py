@@ -1,15 +1,7 @@
 # 추가 분석 streamlit 파일
 import streamlit as st
-import altair as alt
-from streamlit_option_menu import option_menu
 import pandas as pd
 import polars as pl
-import scipy.stats as stats
-from scipy.stats import chi2_contingency
-from statsmodels.graphics.mosaicplot import mosaic
-import plotly.express as px
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
 from function_school_add import *  # function_school_add.py 파일에서 모든 함수 불러오기 
 
 # 폰트 설정
@@ -22,47 +14,8 @@ with open( "component\style\style.css" ) as css:
 #######################
 #데이터 불러오기
 
-df = pl.read_csv('../../../school-accidents/code/dashboard/dashboard_data/학교안전사고데이터통합/학교안전사고데이터_5개년통합_월계절추가.csv')
+df = pl.read_csv('../../../school-accidents/code/dashboard/component/data/학교안전사고데이터통합/sch_df_addage.csv')
 df = df.to_pandas()
-df['사고발생일'] = pd.to_datetime(df['사고발생일'])
-df['연도'] = df['사고발생일'].map(lambda x : x.year)
-
-# 데이터 전처리
-df_2019 = df[df['사고발생일'].between('2019-01-01', '2019-12-31')]
-df_2020 = df[df['사고발생일'].between('2020-01-01', '2020-12-31')]
-df_2021 = df[df['사고발생일'].between('2021-01-01', '2021-12-31')]
-df_2022 = df[df['사고발생일'].between('2022-01-01', '2022-12-31')]
-df_2023 = df[df['사고발생일'].between('2023-01-01', '2023-12-31')]
-
-# 학교급별 분석시 사용될 데이터프레임
-sch_df = df[df['사고자구분'].isin(['일반학생', '특수학교(학급)학생', '체육특기학생'])]
-# 연도 type str로 변경
-sch_df['연도'] = sch_df['연도'].astype(str)
-
-# sch_df에 '나이' 컬럼 추가
-sch_df_addage = sch_df.copy()
-# 접두사 추가 함수 적용
-sch_df_addage['사고자학년_수정'] = sch_df_addage.apply(add_prefix, axis=1)
-# 나이 정의 및 추가
-age_mapping = {
-    '초등_1학년': 8,
-    '초등_2학년': 9,
-    '초등_3학년': 10,
-    '초등_4학년': 11,
-    '초등_5학년': 12,
-    '초등_6학년':13,
-    '중등_1학년': 14,
-    '중등_2학년': 15,
-    '중등_3학년': 16,
-    '고등_1학년': 17,
-    '고등_2학년': 18,
-    '고등_3학년': 19
-    }
-sch_df_addage['나이'] = sch_df_addage['사고자학년_수정'].map(age_mapping)
-# NaN 값을 0으로 대체
-sch_df_addage['나이'] = sch_df_addage['나이'].fillna(0)
-# '나이' 컬럼을 int 타입으로 변환
-sch_df_addage['나이'] = sch_df_addage['나이'].astype(int)
 
 st.markdown('''
 <h1 style="font-family: 'KoPubWorld Dotum', sans-serif; text-align: center;">
@@ -81,7 +34,7 @@ st.divider()
 col = st.columns((1, 2.5, 0.5, 2.5, 1), gap='medium')
 
 # sch_totacci 데이터프레임(5개년 누적, 초등학교 저학년/고학년 구분)
-sch_totacci = sch_df[~sch_df['학교급'].isin(['기타학교', '특수학교'])]
+sch_totacci = df[df['학교급'].isin(['기타학교', '특수학교'])]
 # 초등학교 저학년/고학년 구분
 sch_totacci.loc[(sch_totacci['학교급']=='초등학교')&(sch_totacci['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
 sch_totacci.loc[(sch_totacci['학교급']=='초등학교')&(sch_totacci['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'
@@ -98,18 +51,18 @@ sch_totacci = sch_totacci.dropna()
 
 # age_totacci 데이터프레임(5개년 누적, 나이 컬럼 활용)
 # '학교급'의 '유치원', '특수학교', '기타학교' 값 제외
-age_totacci = sch_df_addage[
-    (sch_df_addage['학교급'] != '유치원') &
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교') 
+age_totacci = df[
+    (df['학교급'] != '유치원') &
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교') 
     ]
 # '초등학교'의 '사고자학년'에서 '유아' 값을 제외
 age_totacci = age_totacci[~((age_totacci['학교급'] == '초등학교') & 
-                              (age_totacci['사고자학년'] == '유아'))]
+                            (age_totacci['사고자학년'] == '유아'))]
 # '중학교'의 '사고자학년'에서 '4학년'과 '5학년' 값을 제외
 age_totacci = age_totacci[~((age_totacci['학교급'] == '중학교') & 
-                              ((age_totacci['사고자학년'] == '4학년') | 
-                               (age_totacci['사고자학년'] == '5학년')))]
+                            ((age_totacci['사고자학년'] == '4학년') | 
+                             (age_totacci['사고자학년'] == '5학년')))]
 # '나이'가 0인 행 추가 제거
 age_totacci = age_totacci[age_totacci['나이'] != 0]
 # 사고자학년_수정 기준으로 groupby
@@ -162,9 +115,9 @@ custom_order = ["유치원", "초등(저)", "초등(고)", "중등", "고등"]
 
 # sch_accitime 데이터프레임(5개년 누적)
 # '학교급'의 '특수학교', '기타학교' 값 제외
-sch_accitime = sch_df_addage[
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+sch_accitime = df[
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
 sch_accitime.loc[(sch_accitime['학교급']=='초등학교')&(sch_accitime['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
@@ -184,9 +137,9 @@ sch_accitime.rename(columns={'사고시간': '사고 시간'}, inplace=True)
 
 # sch_acciplace 데이터프레임(5개년 누적)
 # '학교급'의 '특수학교', '기타학교' 값 제외
-sch_acciplace = sch_df_addage[
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+sch_acciplace = df[
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
 sch_acciplace.loc[(sch_acciplace['학교급']=='초등학교')&(sch_acciplace['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
@@ -204,9 +157,9 @@ sch_acciplace.rename(columns={'사고장소': '사고 장소'}, inplace=True)
 
 # sch_accipart 데이터프레임(5개년 누적)
 # '학교급'의 '특수학교', '기타학교' 값 제외
-sch_accipart = sch_df_addage[
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+sch_accipart = df[
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
 sch_accipart.loc[(sch_accipart['학교급']=='초등학교')&(sch_accipart['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
@@ -224,9 +177,9 @@ sch_accipart.rename(columns={'사고부위': '사고 부위'}, inplace=True)
 
 # sch_accitype 데이터프레임(5개년 누적)
 # '학교급'의 '특수학교', '기타학교' 값 제외
-sch_accitype = sch_df_addage[
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+sch_accitype = df[
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
 sch_accitype.loc[(sch_accitype['학교급']=='초등학교')&(sch_accitype['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
@@ -247,9 +200,9 @@ sch_accitype.rename(columns={'사고형태': '사고 형태'}, inplace=True)
 
 # sch_acciact 데이터프레임(5개년 누적)
 # '학교급'의 '특수학교', '기타학교' 값 제외
-sch_acciact = sch_df_addage[
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+sch_acciact = df[
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
 sch_acciact.loc[(sch_acciact['학교급']=='초등학교')&(sch_acciact['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
@@ -265,9 +218,9 @@ sch_acciact.rename(columns={'사고당시활동': '사고 당시 활동'}, inpla
 
 # sch_accimdm 데이터프레임(5개년 누적)
 # '학교급'의 '특수학교', '기타학교' 값 제외
-sch_accimdm = sch_df_addage[
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+sch_accimdm = df[
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
 sch_accimdm.loc[(sch_accimdm['학교급']=='초등학교')&(sch_accimdm['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
@@ -285,10 +238,10 @@ sch_accimdm.rename(columns={'사고매개물': '사고 매개물'}, inplace=True
 
 # age_accitime 데이터프레임(5개년 누적)
 # '학교급'의 '유치원', '특수학교', '기타학교' 값 제외
-age_accitime = sch_df_addage[
-    (sch_df_addage['학교급'] != '유치원') &
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+age_accitime = df[
+    (df['학교급'] != '유치원') &
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # '나이'와 '사고시간' 컬럼 선택
 age_accitime = age_accitime[['나이', '사고시간']]
@@ -303,10 +256,10 @@ age_accitime.rename(columns={'사고시간': '사고 시간'}, inplace=True)
 
 # age_acciplace 데이터프레임(5개년 누적)
 # '학교급'의 '유치원', '특수학교', '기타학교' 값 제외
-age_acciplace = sch_df_addage[
-    (sch_df_addage['학교급'] != '유치원') &
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+age_acciplace = df[
+    (df['학교급'] != '유치원') &
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # '나이'와 '사고장소' 컬럼 선택
 age_acciplace = age_acciplace[['나이', '사고장소']]
@@ -319,10 +272,10 @@ age_acciplace.rename(columns={'사고장소': '사고 장소'}, inplace=True)
 
 # age_accipart 데이터프레임(5개년 누적)
 # '학교급'의 '유치원', '특수학교', '기타학교' 값 제외
-age_accipart = sch_df_addage[
-    (sch_df_addage['학교급'] != '유치원') &
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+age_accipart = df[
+    (df['학교급'] != '유치원') &
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # '나이'와 '사고부위' 컬럼 선택
 age_accipart = age_accipart[['나이', '사고부위']]
@@ -335,10 +288,10 @@ age_accipart.rename(columns={'사고부위': '사고 부위'}, inplace=True)
 
 # age_accitype 데이터프레임(5개년 누적)
 # '학교급'의 '유치원', '특수학교', '기타학교' 값 제외
-age_accitype = sch_df_addage[
-    (sch_df_addage['학교급'] != '유치원') &
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+age_accitype = df[
+    (df['학교급'] != '유치원') &
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # '나이'와 '사고형태' 컬럼 선택
 age_accitype = age_accitype[['나이', '사고형태']]
@@ -354,10 +307,10 @@ age_accitype.rename(columns={'사고형태': '사고 형태'}, inplace=True)
 
 # age_acciact 데이터프레임(5개년 누적)
 # '학교급'의 '유치원', '특수학교', '기타학교' 값 제외
-age_acciact = sch_df_addage[
-    (sch_df_addage['학교급'] != '유치원') &
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+age_acciact = df[
+    (df['학교급'] != '유치원') &
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # '나이'와 '사고당시활동' 컬럼 선택
 age_acciact = age_acciact[['나이', '사고당시활동']]
@@ -368,10 +321,10 @@ age_acciact.rename(columns={'사고당시활동': '사고 당시 활동'}, inpla
 
 # age_accimdm 데이터프레임(5개년 누적)
 # '학교급'의 '유치원', '특수학교', '기타학교' 값 제외
-age_accimdm = sch_df_addage[
-    (sch_df_addage['학교급'] != '유치원') &
-    (sch_df_addage['학교급'] != '특수학교') &
-    (sch_df_addage['학교급'] != '기타학교')
+age_accimdm = df[
+    (df['학교급'] != '유치원') &
+    (df['학교급'] != '특수학교') &
+    (df['학교급'] != '기타학교')
     ]
 # '나이'와 '사고매개물' 컬럼 선택
 age_accimdm = age_accimdm[['나이', '사고매개물']]
