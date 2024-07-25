@@ -31,7 +31,7 @@ df['연도'] = df['사고발생일'].map(lambda x : x.year)
 
 
 # geojson파일 불러오기
-file_path = '/../../data/지도 시각화 데이터/TL_SCCO_CTPRVN.json'
+file_path = current_dir+"/component/data/지도 시각화 데이터/TL_SCCO_CTPRVN.json"
 geojson = gpd.read_file(file_path)
 geojson = geojson.replace('강원도','강원특별자치도') # 강원도 표기 변경
 geojson['지역'] = geojson['CTP_KOR_NM'].apply(extract_region) # 학교 안전사고 데이터와 지역 표기 형식 맞추기(충청남도->충북)
@@ -66,11 +66,11 @@ def create_map(df, location_column, parameter_column):
     return st.plotly_chart(fig)
 
 # 학교별 데이터 불러오기 - 시도별
-school2019 = pd.ExcelFile('/../../data/학교,학과별 데이터셋_전처리/2019년_상반기_시도별.xlsx')
-school2020 = pd.ExcelFile('/../../data/학교,학과별 데이터셋_전처리/2020년_상반기_시도별.xlsx')
-school2021 = pd.ExcelFile('/../../data/학교,학과별 데이터셋_전처리/2021년_상반기_시도별.xlsx')
-school2022 = pd.ExcelFile('/../../data/학교,학과별 데이터셋_전처리/2022년_상반기_시도별.xlsx')
-school2023 = pd.ExcelFile('/../../data/학교,학과별 데이터셋_전처리/2023년_상반기_시도별.xlsx')
+school2019 = pd.ExcelFile(current_dir+'/component/data/학교,학과별 데이터셋_전처리/2019년_상반기_시도별.xlsx')
+school2020 = pd.ExcelFile(current_dir+'/component/data/학교,학과별 데이터셋_전처리/2019년_상반기_시도별.xlsx')
+school2021 = pd.ExcelFile(current_dir+'/component/data/학교,학과별 데이터셋_전처리/2019년_상반기_시도별.xlsx')
+school2022 = pd.ExcelFile(current_dir+'/component/data/학교,학과별 데이터셋_전처리/2019년_상반기_시도별.xlsx')
+school2023 = pd.ExcelFile(current_dir+'/component/data/학교,학과별 데이터셋_전처리/2019년_상반기_시도별.xlsx')
 
 # 학교별 데이터 연도별 데이터 프레임 생성 - 시도별
 school2019_df = schooldf1(school2019)
