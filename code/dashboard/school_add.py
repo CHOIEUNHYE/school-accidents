@@ -83,12 +83,14 @@ col = st.columns((1, 2.5, 0.5, 2.5, 1), gap='medium')
 # sch_totacci 데이터프레임(5개년 누적, 초등학교 저학년/고학년 구분)
 sch_totacci = sch_df[~sch_df['학교급'].isin(['기타학교', '특수학교'])]
 # 초등학교 저학년/고학년 구분
-sch_totacci.loc[(sch_totacci['학교급']=='초등학교')&(sch_totacci['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-sch_totacci.loc[(sch_totacci['학교급']=='초등학교')&(sch_totacci['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+sch_totacci.loc[(sch_totacci['학교급']=='초등학교')&(sch_totacci['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
+sch_totacci.loc[(sch_totacci['학교급']=='초등학교')&(sch_totacci['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'
 # 학교급 기준으로 groupby
 sch_totacci = sch_totacci.groupby(['학교급']).size().reset_index(name='총 사고수')
+# 시각화 편의를 위해 중학교, 고등학교 값 변경
+sch_totacci['학교급'] = sch_totacci['학교급'].replace({'중학교': '중등', '고등학교': '고등'})
 # 학교급 기준으로 정렬
-custom_order = ["유치원", "초등학교(저학년)", "초등학교(고학년)", "중학교", "고등학교"]
+custom_order = ["유치원", "초등(저)", "초등(고)", "중등", "고등"]
 sch_totacci['학교급'] = pd.Categorical(sch_totacci['학교급'], categories=custom_order, ordered=True)
 sch_totacci = sch_totacci.sort_values(['학교급']).reset_index(drop=True)
 # 초등학교 저학년/고학년 구분 과정에서 생긴 nan 값(사고자학년 값이 유아인 경우) 처리
@@ -129,7 +131,7 @@ with col[1]:
                 학교급과 사고 수 간의 관계 분석
                 </h4>
                 ''', unsafe_allow_html=True)
-    custom_order = ["고등학교", "중학교", "초등학교(고학년)", "초등학교(저학년)", "유치원"]
+    custom_order = ["고등", "중등", "초등(고)", "초등(저)", "유치원"]
     st.plotly_chart(create_h_barchart(sch_totacci, '총 사고수', '학교급', custom_order))
     
 with col[3]:
@@ -156,7 +158,7 @@ st.markdown('###')
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["사고 시간", "사고 장소", "사고 부위", "사고 형태", "사고 당시 활동", "사고 매개물"])
 
 # 학교급 정렬 기준 지정
-custom_order = ["유치원", "초등학교(저학년)", "초등학교(고학년)", "중학교", "고등학교"]
+custom_order = ["유치원", "초등(저)", "초등(고)", "중등", "고등"]
 
 # sch_accitime 데이터프레임(5개년 누적)
 # '학교급'의 '특수학교', '기타학교' 값 제외
@@ -165,8 +167,8 @@ sch_accitime = sch_df_addage[
     (sch_df_addage['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
-sch_accitime.loc[(sch_accitime['학교급']=='초등학교')&(sch_accitime['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-sch_accitime.loc[(sch_accitime['학교급']=='초등학교')&(sch_accitime['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+sch_accitime.loc[(sch_accitime['학교급']=='초등학교')&(sch_accitime['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
+sch_accitime.loc[(sch_accitime['학교급']=='초등학교')&(sch_accitime['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'
 # 초등학교 중 유아인 행을 제거
 sch_accitime = sch_accitime[sch_accitime['학교급'] != '초등학교']
 # '학교급'과 '사고시간' 컬럼 선택
@@ -175,6 +177,8 @@ sch_accitime = sch_accitime[['학교급', '사고시간']]
 sch_accitime = sch_accitime.replace('점심시간', '식사시간')
 sch_accitime = sch_accitime.replace('석식시간', '식사시간')
 sch_accitime = sch_accitime.replace('휴식시간 및 청소시간', '휴식/청소시간')
+# 시각화 편의를 위해 중학교, 고등학교 값 변경
+sch_accitime['학교급'] = sch_accitime['학교급'].replace({'중학교': '중등', '고등학교': '고등'})
 # 컬럼명 변경
 sch_accitime.rename(columns={'사고시간': '사고 시간'}, inplace=True)
 
@@ -185,14 +189,16 @@ sch_acciplace = sch_df_addage[
     (sch_df_addage['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
-sch_acciplace.loc[(sch_acciplace['학교급']=='초등학교')&(sch_acciplace['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-sch_acciplace.loc[(sch_acciplace['학교급']=='초등학교')&(sch_acciplace['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+sch_acciplace.loc[(sch_acciplace['학교급']=='초등학교')&(sch_acciplace['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
+sch_acciplace.loc[(sch_acciplace['학교급']=='초등학교')&(sch_acciplace['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'
 # 초등학교 중 유아인 행을 제거
 sch_acciplace = sch_acciplace[sch_acciplace['학교급'] != '초등학교']
 # '학교급'과 '사고장소' 컬럼 선택
 sch_acciplace = sch_acciplace[['학교급', '사고장소']]
 # 분석 편의를 위해 일부 데이터 값 변경
 sch_acciplace = sch_acciplace.replace('교외활동', '교외')
+# 시각화 편의를 위해 중학교, 고등학교 값 변경
+sch_acciplace['학교급'] = sch_acciplace['학교급'].replace({'중학교': '중등', '고등학교': '고등'})
 # 컬럼명 변경
 sch_acciplace.rename(columns={'사고장소': '사고 장소'}, inplace=True)
 
@@ -203,14 +209,16 @@ sch_accipart = sch_df_addage[
     (sch_df_addage['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
-sch_accipart.loc[(sch_accipart['학교급']=='초등학교')&(sch_accipart['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-sch_accipart.loc[(sch_accipart['학교급']=='초등학교')&(sch_accipart['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+sch_accipart.loc[(sch_accipart['학교급']=='초등학교')&(sch_accipart['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
+sch_accipart.loc[(sch_accipart['학교급']=='초등학교')&(sch_accipart['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'
 # 초등학교 중 유아인 행을 제거
 sch_accipart = sch_accipart[sch_accipart['학교급'] != '초등학교']
 # '학교급'과 '사고부위' 컬럼 선택
 sch_accipart = sch_accipart[['학교급', '사고부위']]
 # 분석 편의를 위해 일부 데이터 값 변경
 sch_accipart['사고부위'] = sch_accipart['사고부위'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
+# 시각화 편의를 위해 중학교, 고등학교 값 변경
+sch_accipart['학교급'] = sch_accipart['학교급'].replace({'중학교': '중등', '고등학교': '고등'})
 # 컬럼명 변경
 sch_accipart.rename(columns={'사고부위': '사고 부위'}, inplace=True)
 
@@ -221,8 +229,8 @@ sch_accitype = sch_df_addage[
     (sch_df_addage['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
-sch_accitype.loc[(sch_accitype['학교급']=='초등학교')&(sch_accitype['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-sch_accitype.loc[(sch_accitype['학교급']=='초등학교')&(sch_accitype['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+sch_accitype.loc[(sch_accitype['학교급']=='초등학교')&(sch_accitype['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
+sch_accitype.loc[(sch_accitype['학교급']=='초등학교')&(sch_accitype['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'
 # 초등학교 중 유아인 행을 제거
 sch_accitype = sch_accitype[sch_accitype['학교급'] != '초등학교']
 # '학교급'과 '사고형태' 컬럼 선택
@@ -232,6 +240,8 @@ sch_accitype = sch_accitype.replace('낙상-미끄러짐', '낙상')
 sch_accitype = sch_accitype.replace('낙상-넘어짐', '낙상')
 sch_accitype = sch_accitype.replace('낙상-떨어짐', '낙상')
 sch_accitype = sch_accitype.replace('염좌·삐임 등 신체 충격', '신체 충격')
+# 시각화 편의를 위해 중학교, 고등학교 값 변경
+sch_accitype['학교급'] = sch_accitype['학교급'].replace({'중학교': '중등', '고등학교': '고등'})
 # 컬럼명 변경
 sch_accitype.rename(columns={'사고형태': '사고 형태'}, inplace=True)
 
@@ -242,12 +252,14 @@ sch_acciact = sch_df_addage[
     (sch_df_addage['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
-sch_acciact.loc[(sch_acciact['학교급']=='초등학교')&(sch_acciact['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-sch_acciact.loc[(sch_acciact['학교급']=='초등학교')&(sch_acciact['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+sch_acciact.loc[(sch_acciact['학교급']=='초등학교')&(sch_acciact['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
+sch_acciact.loc[(sch_acciact['학교급']=='초등학교')&(sch_acciact['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'
 # 초등학교 중 유아인 행을 제거
 sch_acciact = sch_acciact[sch_acciact['학교급'] != '초등학교']
 # '학교급'과 '사고당시활동' 컬럼 선택
 sch_acciact = sch_acciact[['학교급', '사고당시활동']]
+# 시각화 편의를 위해 중학교, 고등학교 값 변경
+sch_acciact['학교급'] = sch_acciact['학교급'].replace({'중학교': '중등', '고등학교': '고등'})
 # 컬럼명 변경
 sch_acciact.rename(columns={'사고당시활동': '사고 당시 활동'}, inplace=True)
 
@@ -258,14 +270,16 @@ sch_accimdm = sch_df_addage[
     (sch_df_addage['학교급'] != '기타학교')
     ]
 # 초등학교 저학년/고학년 구분
-sch_accimdm.loc[(sch_accimdm['학교급']=='초등학교')&(sch_accimdm['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등학교(저학년)'
-sch_accimdm.loc[(sch_accimdm['학교급']=='초등학교')&(sch_accimdm['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등학교(고학년)'
+sch_accimdm.loc[(sch_accimdm['학교급']=='초등학교')&(sch_accimdm['사고자학년'].isin(['1학년','2학년','3학년'])),'학교급']='초등(저)'
+sch_accimdm.loc[(sch_accimdm['학교급']=='초등학교')&(sch_accimdm['사고자학년'].isin(['4학년','5학년','6학년'])),'학교급']='초등(고)'
 # 초등학교 중 유아인 행을 제거
 sch_accimdm = sch_accimdm[sch_accimdm['학교급'] != '초등학교']
 # '학교급'과 '사고매개물' 컬럼 선택
 sch_accimdm = sch_accimdm[['학교급', '사고매개물']]
 # 분석 편의를 위해 일부 데이터 값 변경
 sch_accimdm['사고매개물'] = sch_accimdm['사고매개물'].str.replace(r'\([^)]*\)', '', regex=True).str.strip()
+# 시각화 편의를 위해 중학교, 고등학교 값 변경
+sch_accimdm['학교급'] = sch_accimdm['학교급'].replace({'중학교': '중등', '고등학교': '고등'})
 # 컬럼명 변경
 sch_accimdm.rename(columns={'사고매개물': '사고 매개물'}, inplace=True)
 
@@ -370,12 +384,9 @@ age_accimdm.rename(columns={'사고매개물': '사고 매개물'}, inplace=True
 
 # 탭별 그래프 추가 함수  
 def render_tab(df1, df2, acci_content):
-    # 샘플링 함수 실행
-    #sampled_df1 = sample_data(df1)
-    #sampled_df2 = sample_data(df2)
     
     # 레이아웃 지정
-    col = st.columns((0.5, 3, 0.5, 3, 0.5), gap='medium')
+    col = st.columns((0.3, 2, 0.3, 4, 0.3), gap='medium')
     
     with col[1]:
         st.markdown('######')
