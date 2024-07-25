@@ -27,6 +27,7 @@ with open( current_dir+"/component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
     
 
+
 #########################
 # sidebar 멀티 페이지 설정
 
