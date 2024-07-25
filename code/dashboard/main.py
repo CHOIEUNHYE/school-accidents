@@ -6,13 +6,9 @@
 # pip install streamlit-option-menu
 import streamlit as st
 import altair as alt
-from streamlit_option_menu import option_menu
 import pandas as pd
 import polars as pl
 import plotly.express as px
-from function import *  # function.py 파일에서 모든 함수 불러오기 
-from function_year_region import *  # function_year_region.py 파일에서 모든 함수 불러오기 
-from function_school_level import *  # function_school_level.py 파일에서 모든 함수 불러오기 
 
 
 
@@ -45,7 +41,7 @@ school_region = st.Page(
     "school_region.py", title="지역별 분석", icon=":material/location_on:")
 
 school_add = st.Page(
-    "school_add.py", title="추가 분석", icon=":material/location_on:")
+    "school_add.py", title="추가 분석", icon=":material/bar_chart:")
 
 # sidebar 설정
 pg = st.navigation(
