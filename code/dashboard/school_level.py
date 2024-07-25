@@ -156,6 +156,9 @@ with col[0]:
                     }
                 st.plotly_chart(create_piechart(sch_tot_acci2, year, '학교급', '총 사고수', custom_order, colors))
             
+            st.markdown('######')
+            st.markdown('학교급별 총 사고 수에 대한 정보를 각각의 연도마다 제공합니다. 특정 연도에 어느 학교급에서 사고가 가장 많이 발생했는지 양상을 파악할 수 있습니다.', unsafe_allow_html=True)
+            st.markdown('초등학교의 경우, 저학년과 고학년의 특성이 서로 다르다고 보아 이를 구분하여 추가 분석을 실시하였습니다.', unsafe_allow_html=True)
             st.divider()
             
             col = st.columns((3, 2), gap='medium')
@@ -228,7 +231,12 @@ with col[0]:
                         '6학년': '#837ed5'
                         }
                     st.plotly_chart(create_donut_chart(sch_grade_acci, year, '특수학교', '사고자학년', '사고수', ss_order, ss_colors))
-
+        
+        st.markdown('######')
+        st.markdown('좌측 시각화는 학교급별 사고자 성별에 따른 사고 수에 대한 정보를 각각의 연도마다 제공합니다. 특정 연도에서의 학교급별 총 사고자의 성별 비율을 파악할 수 있습니다.', unsafe_allow_html=True)
+        st.markdown('분석을 진행하면서 학교급 중 기타학교는 학교의 특성을 파악하기 어렵다고 보아 분석 대상에서 제외하였습니다. 초등학교의 경우에는 저학년과 고학년의 특성이 서로 다르다고 보아 이를 구분해 분석하였습니다.', unsafe_allow_html=True)
+        st.markdown('우측 시각화는 학교급별 사고자 학년에 따른 사고 수에 대한 정보를 각각의 연도마다 제공합니다. 특정 연도에서의 학교급별 총 사고자의 학년 비율을 파악할 수 있습니다.', unsafe_allow_html=True)
+        st.markdown('분석을 진행하면서 학교급 중 유치원은 학년이 따로 구분되어 있지 않았고, 기타학교는 학교의 특성을 파악하기 어렵다고 판단하여 모두 분석 대상에서 제외하였습니다. 일반적인 학년 체계에 따라 분석을 진행하고자 초등학교에서의 유아 값과 중학교에서의 4, 5학년 값 또한 제외하고 분석하였습니다.', unsafe_allow_html=True)
         st.divider()
             
     # 각 탭에서의 함수 실행
@@ -268,6 +276,10 @@ with col[1]:
                 </h4>
                 ''', unsafe_allow_html=True)
     st.plotly_chart(create_stacked_barchart(month_level_pivot, sch_type_cat, colors, months))
+    
+    st.markdown('######')
+    st.markdown('학교급마다 월별로 발생한 총 사고 수를 5개년 누적하여 비교하였습니다. 특정 학교급에서 어느 달에 사고가 가장 많이 발생했는지 양상을 파악할 수 있습니다.', unsafe_allow_html=True)
+    st.markdown('초등학교의 경우에는 저학년과 고학년의 특성이 서로 다르다고 보아 이를 구분해 분석하였습니다.', unsafe_allow_html=True)
 
     st.divider()
 
@@ -281,9 +293,13 @@ with col[1]:
                 ''', unsafe_allow_html=True)
 st.markdown('###')
 
+st.markdown('학교급별 사고 내용(사고 시간, 사고 장소, 사고 부위, 사고 형태, 사고 당시 활동, 사고 매개물)에 대한 정보를 5개년 통합하여 제공합니다. 분석 결과 중 상위 5개 항목만 제공하여 특정 학교급에서의 주된 사고 발생 양상을 파악할 수 있습니다.', unsafe_allow_html=True)
+st.markdown('초등학교의 경우에는 저학년과 고학년의 특성이 서로 다르다고 보아 이를 구분해 분석하였습니다.', unsafe_allow_html=True)
+st.divider()
+        
 # 탭 정의
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["사고 시간", "사고 장소", "사고 부위", "사고 형태", "사고 당시 활동", "사고 매개물"])
-    
+
 # 학교급 정렬 기준 지정
 custom_order = ["유치원", "초등학교(저학년)", "초등학교(고학년)", "중학교", "고등학교", "특수학교"]
 

@@ -19,7 +19,7 @@ df = df.to_pandas()
 
 st.markdown('''
 <h1 style="font-family: 'KoPubWorld Dotum', sans-serif; text-align: center;">
-    학교안전사고 추가 분석
+    학교안전사고 추가 관계 분석
 </h1>
 ''', unsafe_allow_html=True)
 
@@ -96,7 +96,10 @@ with col[3]:
                 </h4>
                 ''', unsafe_allow_html=True)
     st.plotly_chart(create_line_chart(age_totacci, '나이', '총 사고수'))
-    
+
+st.markdown('######')
+st.markdown('학교급과 5개년 총 사고 수 간의 관계, 나이와 5개년 총 사고 수 간의 관계에 대한 정보를 함께 제공합니다. 학교급과 5개년 총 사고 수 간의 관계는 막대그래프로, 나이와 5개년 총 사고 수 간의 관계는 상관 분석을 통해 상관 계수를 도출하고 꺾은선 그래프로 나타냈습니다.', unsafe_allow_html=True)
+st.markdown('해당 분석들은 모두 유치원부터 고등학교까지를 분석 대상으로 삼았습니다. 추가로 학교급과 5개년 총 사고 수 간의 관계 분석의 경우, 초등학교를 저학년과 고학년으로 구분해 분석하였습니다. 나이와 5개년 총 사고 수 간의 관계 분석의 경우에는 나이 데이터를 직접 추가하는 과정에서 유치원생들의 나이를 단정하기 어렵다고 판단하여 분석 대상에서 추가 제외하였습니다. 초등학교에서의 유아 값과 중학교에서의 4, 5학년 값 또한 제외하였습니다.', unsafe_allow_html=True)
 st.divider()
 
 st.markdown('######')
@@ -362,6 +365,10 @@ def render_tab(df1, df2, acci_content):
         
         # df2 그래프 시각화
         st.plotly_chart(plot_boxplot(df2, acci_content, '나이'))
+    
+    st.markdown('######')
+    st.markdown('학교급과 사고 내용 간의 관계, 나이와 사고 내용 간의 관계에 대한 정보를 함께 제공합니다. 여기서 사고 내용은 사고 시간, 사고 장소, 사고 부위, 사고 형태, 사고 당시 활동, 사고 매개물을 말합니다. 학교급과 사고 내용 간의 관계는 히트맵 시각화로, 나이와 사고 내용 간의 관계는 박스 플롯으로 나타냈습니다.', unsafe_allow_html=True)
+    st.markdown('분석 대상과 분석 시 제외한 값들은 앞선 분석과 동일하게 설정되었습니다.', unsafe_allow_html=True)
         
 # 각 탭에서의 함수 실행
 with tab1:
