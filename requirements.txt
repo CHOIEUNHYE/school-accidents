@@ -3,4 +3,4 @@ plotly
 wordcloud
 geopandas
 scipy
-streamlit_option_men
+streamlit_option_menu
