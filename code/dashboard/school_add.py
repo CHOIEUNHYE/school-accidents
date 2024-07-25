@@ -14,7 +14,7 @@ with open( "component\style\style.css" ) as css:
 #######################
 #데이터 불러오기
 
-df = pl.read_csv('../../../school-accidents/code/dashboard/component/data/학교안전사고데이터통합/df.csv')
+df = pl.read_csv('../../../school-accidents/code/dashboard/component/data/학교안전사고데이터통합/sch_df_addage.csv')
 df = df.to_pandas()
 
 st.markdown('''
