@@ -29,8 +29,8 @@ css_file_path = os.path.join(current_dir, "component/style/KoPubWorld Dotum.css"
 st.write(f"Current directory: {current_dir}")
 st.write(f"CSS file path: {css_file_path}")
 
-#with open( css_file_path ) as css:
-#    st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
+with open( css_file_path ) as css:
+    st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
     
 
 #########################
