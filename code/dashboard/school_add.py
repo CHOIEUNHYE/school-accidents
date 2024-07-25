@@ -12,13 +12,15 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from function_school_add import *  # function_school_add.py 파일에서 모든 함수 불러오기 
 
+# 현재 파일의 디렉토리를 기준으로 경로 설정
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 # 폰트 설정
-with open( "component\style\KoPubWorld Dotum.css" ) as css:
+with open( current_dir+"/component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
 
-with open( "component\style\style.css" ) as css:
+with open( current_dir+"/component/style/style.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
-
 #######################
 #데이터 불러오기
 
