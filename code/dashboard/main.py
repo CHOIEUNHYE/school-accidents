@@ -35,13 +35,14 @@ with open( current_dir+"/component/style/KoPubWorld Dotum.css" ) as css:
 school_home = accident_details = st.Page(
     "school_year.py", title="들어가기", icon=":material/home:")
 
-accident_details = st.Page(
-    "school_accident_details.py", title="학교안전사고 내용 분석", icon=":material/done_outline:")
-
-school_level = st.Page("school_level.py", title="학교급별 분석", icon=":material/school:")
-
 school_region = st.Page(
     "school_region.py", title="지역별 분석", icon=":material/location_on:")
+
+school_level = st.Page(
+    "school_level.py", title="학교급별 분석", icon=":material/school:")
+
+accident_details = st.Page(
+    "school_accident_details.py", title="세부 내용 분석", icon=":material/done_outline:")
 
 school_add = st.Page(
     "school_add.py", title="추가 관계 분석", icon=":material/bar_chart:")
@@ -49,7 +50,6 @@ school_add = st.Page(
 # sidebar 설정
 pg = st.navigation(
     {   
-
         "🏫학교안전사고 분석 대시보드": [school_home,school_region,school_level,accident_details,school_add]
     }
 )
