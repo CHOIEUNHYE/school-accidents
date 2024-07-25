@@ -37,7 +37,7 @@ if os.path.exists(style_dir):
 else:
     st.error(f"Style 디렉토리를 찾을 수 없습니다: {style_dir}")
 
-with open( css_file_path ) as css:
+with open( current_dir+"component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
     
 
