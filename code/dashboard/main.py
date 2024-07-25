@@ -21,7 +21,6 @@ st.set_page_config(
     initial_sidebar_state="expanded")
 
 os.write(1,b'Something was executed.\n')
-os.write(2,os.getcwd())
 
 with open( "component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
