@@ -109,11 +109,9 @@ with col[1] :
             st.markdown('###')
             print_df = acc_spot.sort_values(['연도','사고건수'],ascending=[True,False]).reset_index(drop=True)
             print_df['퍼센트'] = print_df['퍼센트'].astype(str)
-            styled_df = style_dataframe(print_df[['연도','사고장소','사고건수','퍼센트']])
-            # html_df = styled_df.to_html(index=False)
-            html_df = styled_df.hide(axis='index').render()
+            styled_df = style_dataframe(print_df[['연도','사고장소','사고건수','퍼센트']]).hide(axis='index')
+            html_df = styled_df.to_html()
             st.write(html_df, unsafe_allow_html=True)                 
-            # st.dataframe(print_df[['연도','사고장소','사고건수','퍼센트']])
 
     with tab2:
         acc_spot_chart_oneyear(acc_spot_2019)
