@@ -5,4 +5,3 @@ geopandas
 scipy
 streamlit_option_menu
 statsmodels
-pandas==1.5.3
