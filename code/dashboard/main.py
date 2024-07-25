@@ -20,7 +20,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
-os.write(1,b'Something was executed.\n')
 
 # 현재 파일의 디렉토리를 기준으로 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -30,8 +29,8 @@ css_file_path = os.path.join(current_dir, "component/style/KoPubWorld Dotum.css"
 st.write(f"Current directory: {current_dir}")
 st.write(f"CSS file path: {css_file_path}")
 
-with open( "component/style/KoPubWorld Dotum.css" ) as css:
-    st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
+#with open( "component/style/KoPubWorld Dotum.css" ) as css:
+#    st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
     
 
 #########################
