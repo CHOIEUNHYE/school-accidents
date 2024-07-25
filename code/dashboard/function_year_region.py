@@ -1,5 +1,4 @@
 import streamlit as st
-import altair as alt
 from streamlit_option_menu import option_menu
 import pandas as pd
 import polars as pl
