@@ -20,12 +20,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
+os.write(1,b'Something was executed.\n')
+os.write(os.getcwd())
 
 with open( "component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
     
-os.write(1,b'Something was executed.\n')
-os.write(os.getcwd())
+
 #########################
 # sidebar 멀티 페이지 설정
 
