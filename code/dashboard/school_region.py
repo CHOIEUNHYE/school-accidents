@@ -31,7 +31,7 @@ df['연도'] = df['사고발생일'].map(lambda x : x.year)
 
 
 # geojson파일 불러오기
-file_path = '/../../data/지도 시각화 데이터\TL_SCCO_CTPRVN.json'
+file_path = '/../../data/지도 시각화 데이터/TL_SCCO_CTPRVN.json'
 geojson = gpd.read_file(file_path)
 geojson = geojson.replace('강원도','강원특별자치도') # 강원도 표기 변경
 geojson['지역'] = geojson['CTP_KOR_NM'].apply(extract_region) # 학교 안전사고 데이터와 지역 표기 형식 맞추기(충청남도->충북)
