@@ -169,9 +169,9 @@ with tab1:
             rate = row['퍼센트(%)']
                 
             st.markdown(f"""
-            <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 200px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 175px;">
                 <p style="margin: 0; padding: 0; font-size: 15px; font-weight: bold; width: 50px; text-align: left;">{region}</p>
-                <p style="margin: 0; padding: 0; font-size: 14px; width: 100px; text-align: center;">{count:,}</p>
+                <p style="margin: 0; padding: 0; font-size: 14px; width: 75px; text-align: center;">{count:,}</p>
                 <p style="margin: 0; padding: 0; font-size: 8px; width: 50px; text-align: right; color: 'grey';"> {rate:.2f}%</p>
             </div>
             """, unsafe_allow_html=True)
