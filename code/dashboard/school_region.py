@@ -18,7 +18,7 @@ with open( "component\style\style.css" ) as css:
 #######################
 #데이터 불러오기
 
-df = pl.read_csv('../../../school-accidents/code/dashboard/dashboard_data/학교안전사고데이터통합/학교안전사고데이터_5개년통합_월계절추가.csv')
+df = pl.read_csv('../../../school-accidents/code/dashboard/component/data/학교안전사고데이터통합/학교안전사고데이터_5개년통합_월계절추가.csv')
 df = df.to_pandas()
 df['사고발생일'] = pd.to_datetime(df['사고발생일'])
 df['연도'] = df['사고발생일'].map(lambda x : x.year)
@@ -37,7 +37,7 @@ def create_map(df, location_column, parameter_column):
 
     df['is_integer'] = df[parameter_column].apply(lambda x: float(x).is_integer())
     df['formatted_value'] = df.apply(
-        lambda row: f"{row[parameter_column]:.3f}" if not row['is_integer'] else f"{int(row[parameter_column]):,}",
+        lambda row: f"{row[parameter_column]:.2f}" if not row['is_integer'] else f"{int(row[parameter_column]):,}",
         axis=1
     )
 
@@ -109,15 +109,15 @@ geodf2023['연도'] = '2023'
 
 # 연도별 평균 건수
 CTPRVN_2019 = geodf2019.merge(school2019_df, on='지역')
-CTPRVN_2019['사고건수/학생수'] = CTPRVN_2019['건수']/CTPRVN_2019['학생수']
+CTPRVN_2019['사고건수/학생수'] = CTPRVN_2019['건수']/CTPRVN_2019['학생수'] * 100
 CTPRVN_2020 = geodf2020.merge(school2020_df, on='지역')
-CTPRVN_2020['사고건수/학생수'] = CTPRVN_2020['건수']/CTPRVN_2020['학생수']
+CTPRVN_2020['사고건수/학생수'] = CTPRVN_2020['건수']/CTPRVN_2020['학생수'] * 100
 CTPRVN_2021 = geodf2021.merge(school2021_df, on='지역')
-CTPRVN_2021['사고건수/학생수'] = CTPRVN_2021['건수']/CTPRVN_2021['학생수']
+CTPRVN_2021['사고건수/학생수'] = CTPRVN_2021['건수']/CTPRVN_2021['학생수'] * 100
 CTPRVN_2022 = geodf2021.merge(school2021_df, on='지역')
-CTPRVN_2022['사고건수/학생수'] = CTPRVN_2022['건수']/CTPRVN_2022['학생수']
+CTPRVN_2022['사고건수/학생수'] = CTPRVN_2022['건수']/CTPRVN_2022['학생수'] * 100
 CTPRVN_2023 = geodf2021.merge(school2021_df, on='지역')
-CTPRVN_2023['사고건수/학생수'] = CTPRVN_2023['건수']/CTPRVN_2023['학생수']
+CTPRVN_2023['사고건수/학생수'] = CTPRVN_2023['건수']/CTPRVN_2023['학생수'] * 100
 
 #######################
 
@@ -243,7 +243,7 @@ def display_year_tab(year, yeardf, mapdf):
         region_chart(region_count, year)
 
     with col[2]:
-        st.markdown(f'#### {year}년 지역별 학생 수 대비 사고 건수')
+        st.markdown(f'#### {year}년 지역별 학생 수 100명당 사고 건수')
         create_map(mapdf, '지역', '사고건수/학생수')
 
     
