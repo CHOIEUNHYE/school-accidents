@@ -75,15 +75,15 @@ geodf2023['연도'] = '2023'
 
 # 연도별 평균 건수
 CTPRVN_2019 = geodf2019.merge(school2019_df, on='지역')
-CTPRVN_2019['사고건수/학생수'] = CTPRVN_2019['건수']/CTPRVN_2019['학생수']
+CTPRVN_2019['사고건수/학생수'] = CTPRVN_2019['건수']/CTPRVN_2019['학생수'] * 100
 CTPRVN_2020 = geodf2020.merge(school2020_df, on='지역')
-CTPRVN_2020['사고건수/학생수'] = CTPRVN_2020['건수']/CTPRVN_2020['학생수']
+CTPRVN_2020['사고건수/학생수'] = CTPRVN_2020['건수']/CTPRVN_2020['학생수'] * 100
 CTPRVN_2021 = geodf2021.merge(school2021_df, on='지역')
-CTPRVN_2021['사고건수/학생수'] = CTPRVN_2021['건수']/CTPRVN_2021['학생수']
+CTPRVN_2021['사고건수/학생수'] = CTPRVN_2021['건수']/CTPRVN_2021['학생수'] * 100
 CTPRVN_2022 = geodf2021.merge(school2021_df, on='지역')
-CTPRVN_2022['사고건수/학생수'] = CTPRVN_2022['건수']/CTPRVN_2022['학생수']
+CTPRVN_2022['사고건수/학생수'] = CTPRVN_2022['건수']/CTPRVN_2022['학생수'] * 100
 CTPRVN_2023 = geodf2021.merge(school2021_df, on='지역')
-CTPRVN_2023['사고건수/학생수'] = CTPRVN_2023['건수']/CTPRVN_2023['학생수']
+CTPRVN_2023['사고건수/학생수'] = CTPRVN_2023['건수']/CTPRVN_2023['학생수'] * 100
 
 #######################
 
@@ -169,9 +169,9 @@ with tab1:
             rate = row['퍼센트(%)']
                 
             st.markdown(f"""
-            <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 150px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 0; width: 200px;">
                 <p style="margin: 0; padding: 0; font-size: 15px; font-weight: bold; width: 50px; text-align: left;">{region}</p>
-                <p style="margin: 0; padding: 0; font-size: 14px; width: 50px; text-align: center;">{count:,}</p>
+                <p style="margin: 0; padding: 0; font-size: 14px; width: 100px; text-align: center;">{count:,}</p>
                 <p style="margin: 0; padding: 0; font-size: 8px; width: 50px; text-align: right; color: 'grey';"> {rate:.2f}%</p>
             </div>
             """, unsafe_allow_html=True)
@@ -253,7 +253,7 @@ def display_year_tab(year, yeardf, mapdf):
         st.markdown('######')
 
     with col[1]:
-        st.markdown(f'#### {year}년 지역별 학생 수 대비 사고 건수')
+        st.markdown(f'#### {year}년 지역별 학생 수 100명당 사고 건수')
         st.write('''각 시도에서 발생한 사고 수를 해당 시도의 학생 수와 비교하여 분석하였습니다.
                  각 시도별 학생 수에 비례한 사고 발생률을 파악함으로써 보다 정확한 지역별 사고 발생 상황을 이해할 수 있습니다.''')
         st.markdown('######')
