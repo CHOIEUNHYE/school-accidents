@@ -21,7 +21,7 @@ st.set_page_config(
     initial_sidebar_state="expanded")
 
 
-with open( "/component/style/KoPubWorld Dotum.css" ) as css:
+with open( "component/style/KoPubWorld Dotum.css" ) as css:
     st.write( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
     
 
@@ -41,7 +41,7 @@ school_region = st.Page(
     "school_region.py", title="지역별 분석", icon=":material/location_on:")
 
 school_add = st.Page(
-    "school_add.py", title="추가 분석", icon=":material/bar_chart:")
+    "school_add.py", title="추가 관계 분석", icon=":material/bar_chart:")
 
 # sidebar 설정
 pg = st.navigation(
