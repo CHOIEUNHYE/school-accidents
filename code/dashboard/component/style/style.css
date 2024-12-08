@@ -1,0 +1,119 @@
+html, body, iframe, h1, h2, h3, h4, p, b, a [class*="css"] {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}
+
+.st-emotion-cache-oq308l{
+    font-size:20px
+}
+
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: none;
+}
+thead {
+    border:none;
+    display: block;
+}
+
+tbody {
+    display: block;
+    overflow: auto;
+    height: 260px;
+}
+tbody tr:nth-child(2n+1) {
+    background-color: #f9f8f8;
+}
+
+/* tr:first-child {
+    border-top: 1.5px solid black;
+} */
+td {
+border: none !important;
+}
+th, td {
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+    font-family: 'KoPubWorld Dotum, sans-serif';
+    font-size: 17px;
+}
+
+/* tab */
+/* .st-bd {
+    color: rgb(53, 114, 194);
+}
+.st-c2 {
+    background-color: rgb(53, 114, 194);
+}
+/* //*[@id="app"]/div/div/div/ul/li[1]/a/text() */
+
+/* dataframe */ 
+div.glideDataEditor.gdg-wmyidgi {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}
+/* .menu-title[data-v-5af006b8] {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+} */
+/* a.nav-link.active {
+    font-family: 'KoPubWorld Dotum', sans-serif;    
+} */
+
+
+/* .p-3 {
+    font-family: 'KoPubWorld Dotum', sans-serif;   
+}
+
+div.container-xxl.d-flex.flex-column.flex-shrink-0.p-3 {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]{
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}             */
+/* [data-testid="block-container"] {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 0rem;
+    margin-bottom: -7rem;
+}
+
+[data-testid="stVerticalBlock"] {
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+            
+[data-testid="stMarkdownContainer"] {
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+             */
+
+/* Metric */
+[data-testid="stMetric"] {
+    text-align: center;
+    padding-bottom: 0.8rem;
+}
+         
+.st-emotion-cache-1whx7iy p {
+    font-size: 18px;
+
+}
+         
+[data-testid="stMetricLabel"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+            
+[data-testid="stMetricValue"] {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+}
+      
+.st-emotion-cache-1wivap2 {
+    font-family: 'KoPubWorld Dotum', sans-serif;
+}
+

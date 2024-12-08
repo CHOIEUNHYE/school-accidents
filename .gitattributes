@@ -1,0 +1,6 @@
+code/dashboard/component/data/학교안전사고데이터통합/학교안전사고데이터_5개년통합_월계절추가.csv filter=lfs diff=lfs merge=lfs -text
+code/dashboard/component/data/학교안전사고데이터통합/학교안전사고데이터_5개년통합.csv filter=lfs diff=lfs merge=lfs -text
+data/학교안전사고데이터통합/학교안전사고데이터_통합.csv filter=lfs diff=lfs merge=lfs -text
+data/학교안전사고데이터통합/학교안전사고데이터_5개년통합_월계절추가.csv filter=lfs diff=lfs merge=lfs -text
+code/dashboard/component/data/sch_df_addage.csv filter=lfs diff=lfs merge=lfs -text
+code/eda/학교안전사고상관분석_학교급별_유정.ipynb filter=lfs diff=lfs merge=lfs -text
